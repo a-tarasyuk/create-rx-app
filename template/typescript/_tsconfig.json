@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": true,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "reactNamespace": "RX",
+    "noUnusedLocals": true,
+    "noImplicitThis": true,
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "noResolve": false,
+    "module": "commonjs",
+    "target": "es5",
+    "noEmit": true,
+    "jsx": "react",
+    "lib": ["es5", "es2015", "dom"]
+  },
+
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
