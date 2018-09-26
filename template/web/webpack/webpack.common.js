@@ -5,7 +5,7 @@ const ROOT_PATH = path.join(__dirname, '..', '..');
 const DIST_PATH = path.join(ROOT_PATH, 'dist-web');
 const APP_PATH = path.join(ROOT_PATH, 'src');
 const WEB_PATH = path.join(ROOT_PATH, 'web');
-const TS_CONFIG_PATH = path.join(ROOT_PATH, 'tsconfig.json');
+const TS_CONFIG_PATH = path.join(ROOT_PATH, 'web', 'tsconfig.json');
 
 const config = {
   entry: APP_PATH,

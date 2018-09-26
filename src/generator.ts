@@ -14,6 +14,8 @@ interface Dictionary {
   [name: string]: any;
 }
 
+const UNDERSCORE_PATTERN = { _: '' };
+
 export class Generator {
   private defaultPatterns: Dictionary = {};
   private packageJson: Dictionary = {};
@@ -55,9 +57,10 @@ export class Generator {
   }
 
   private generateWeb() {
-    this.walk(path.join(this.options.templatePath, 'web'))
+    const { templatePath } = this.options;
+    this.walk(path.join(templatePath, 'web'))
       .forEach(absolutePath => (
-        this.copy(absolutePath, this.buildDestinationPath(this.options.templatePath, absolutePath), this.defaultPatterns)
+        this.copy(absolutePath, this.buildDestinationPath(templatePath, absolutePath, UNDERSCORE_PATTERN), this.defaultPatterns)
       ));
   }
 
@@ -67,7 +70,7 @@ export class Generator {
 
     this.walk(tsAppTemplatePath)
       .forEach(absolutePath => (
-        this.copy(absolutePath, this.buildDestinationPath(tsAppTemplatePath, absolutePath, { _: '' }))
+        this.copy(absolutePath, this.buildDestinationPath(tsAppTemplatePath, absolutePath, UNDERSCORE_PATTERN))
       ));
   }
 
