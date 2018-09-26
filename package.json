@@ -1,6 +1,6 @@
 {
   "name": "create-rx-app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ReactXP Project Generator",
   "main": "index.js",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "husky": "^1.0.0-rc.15"
   },
   "bin": {
-    "create-rx-app": "dist/create-rx-app.js"
+    "create-rx-app": "bin/create-rx-app.js"
   },
   "engines": {
     "node": ">=8.11.4"
