@@ -1,6 +1,6 @@
 {
   "name": "create-rx-app",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "ReactXP Project Generator",
   "main": "index.js",
   "license": "MIT",
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/a-tarasyuk/tag.git"
+    "url": "https://github.com/a-tarasyuk/create-rx-app.git"
   },
   "bugs": {
-    "url": "https://github.com/a-tarasyuk/tag/issues"
+    "url": "https://github.com/a-tarasyuk/create-rx-app/issues"
   },
   "keywords": [
     "reactxp",
