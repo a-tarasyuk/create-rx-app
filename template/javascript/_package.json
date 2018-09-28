@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "main": "index.js",
+  "version": "0.0.1",
+  "scripts": {
+    "start:windows": "@todo",
+    "start:android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "start:web": "cross-env RX_PLATFORM=web webpack-dev-server --config=web/webpack/webpack.dev.js --progress --colors",
+    "start:ios": "node node_modules/react-native/local-cli/cli.js run-ios",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "build:web": "cross-env RX_PLATFORM=web webpack --config=web/webpack/webpack.prod.js --progress --colors",
+    "lint:watch": "esw -w --changed src/**",
+    "lint": "esw src/**"
+  },
+  "devDependencies": {
+    "@babel/core": "7.1.0",
+    "@babel/plugin-transform-runtime": "7.1.0",
+    "@babel/preset-env": "7.1.0",
+    "@babel/preset-react": "7.0.0",
+    "@babel/runtime": "7.0.0",
+    "babel-eslint": "10.0.1",
+    "babel-loader": "8.0.4",
+    "cross-env": "5.2.0",
+    "eslint": "5.6.0",
+    "eslint-loader": "2.1.0",
+    "eslint-plugin-react": "7.11.1",
+    "eslint-watch": "4.0.2",
+    "html-webpack-plugin": "3.2.0",
+    "metro-react-native-babel-preset": "0.47.0",
+    "webpack": "4.19.1",
+    "webpack-cli": "3.1.0",
+    "webpack-dev-server": "3.1.8",
+    "webpack-merge": "4.1.4"
+  },
+  "dependencies": {
+    "reactxp": "1.4.0-rc.2"
+  }
+}

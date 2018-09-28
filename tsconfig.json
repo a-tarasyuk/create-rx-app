@@ -3,7 +3,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
-    // "noUnusedLocals": true,
+    "noUnusedLocals": true,
     "noImplicitAny": true,
     "noResolve": false,
     "module": "commonjs",

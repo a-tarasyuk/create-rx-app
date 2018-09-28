@@ -1,30 +1,40 @@
+import template from 'mustache';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import path from 'path';
 import fs from 'fs-extra';
 
-export interface GeneratorOptions {
-  templatePath: string;
-  projectName: string;
-  sourceType: string;
-  destPath: string;
-}
-
 interface Dictionary {
   [name: string]: any;
 }
 
-const UNDERSCORE_PATTERN = { _: '' };
+type SourceType = 'javascript' | 'typescript';
+
+export interface GeneratorOptions {
+  templatePath: string;
+  projectName: string;
+  projectPath: string;
+  sourceType: SourceType;
+}
+
+const COMMON_FOLDER = 'common';
+const PATH_PATTERNS: Dictionary = {
+  '_eslintrc': '.eslintrc',
+  '_gitignore': '.gitignore',
+  '_tsconfig.json': 'tsconfig.json',
+  '_tslint.json': 'tslint.json',
+};
 
 export class Generator {
-  private defaultPatterns: Dictionary = {};
+  private projectPatterns: Dictionary = {};
   private packageJson: Dictionary = {};
   private options: GeneratorOptions;
 
   constructor(options: GeneratorOptions) {
     const { projectName } = options;
 
-    this.defaultPatterns = {
+    this.projectPatterns = {
+      DisplayName: projectName,
       ProjectTemplate: projectName,
       projecttemplate: projectName.toLowerCase(),
     };
@@ -32,79 +42,62 @@ export class Generator {
     this.options = options;
   }
 
-  public run() {
-    const { destPath } = this.options;
+  public run(): void {
+    const { projectPath } = this.options;
 
-    console.log(chalk.white.bold('Setting up new ReactXP app in %s'), destPath);
-    fs.mkdirSync(destPath);
+    console.log(chalk.white.bold('Setting up new ReactXP app in %s'), projectPath);
+    fs.mkdirSync(projectPath);
     this.setPackageJson();
-    this.generateNative();
-    this.generateWeb();
+
     this.generateApp();
     this.generatePackageJson();
     this.installDependencies();
     this.printInstructions();
   }
 
-  private generateNative() {
-    const nativeTemplatePath = path.join(this.options.templatePath, 'native');
-
-    this.walk(nativeTemplatePath)
-      .forEach(absolutePath => {
-        const destPath = this.buildDestinationPath(nativeTemplatePath, absolutePath, this.defaultPatterns);
-        this.copy(absolutePath, destPath, this.defaultPatterns);
-      });
-  }
-
-  private generateWeb() {
-    const { templatePath } = this.options;
-    this.walk(path.join(templatePath, 'web'))
-      .forEach(absolutePath => (
-        this.copy(absolutePath, this.buildDestinationPath(templatePath, absolutePath, UNDERSCORE_PATTERN), this.defaultPatterns)
-      ));
-  }
-
-  private generateApp() {
+  private generateApp(): void {
     const { templatePath, sourceType } = this.options;
-    const tsAppTemplatePath = path.join(templatePath, sourceType);
+    const ignorePaths = ['_package.json'];
 
-    this.walk(tsAppTemplatePath)
-      .forEach(absolutePath => (
-        this.copy(absolutePath, this.buildDestinationPath(tsAppTemplatePath, absolutePath, UNDERSCORE_PATTERN))
+    [COMMON_FOLDER, sourceType]
+      .map(folderName => path.join(templatePath, folderName))
+      .forEach(srcPath => (
+        this.walk(srcPath, ignorePaths)
+          .forEach((absolutePath: string) => this.copy(absolutePath, this.buildDestPath(srcPath, absolutePath)))
       ));
   }
 
-  private generatePackageJson() {
-    const { destPath, projectName } = this.options;
-    const packageJsonPath = path.resolve(destPath, 'package.json');
+  private generatePackageJson(): void {
+    const { projectPath, projectName } = this.options;
+    const packageJsonPath = path.resolve(projectPath, 'package.json');
     const packageJsonContent = {
       ...this.packageJson, dependencies: {}, devDependencies: {}, name: projectName.toLowerCase(),
     };
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJsonContent, null, 2));
   }
 
-  private printInstructions() {
-    const { projectName, destPath } = this.options;
-    const xcodeProjectPath = `${ path.resolve(destPath, 'ios', projectName) }.xcodeproj`;
+  private printInstructions(): void {
+    const { projectName, projectPath } = this.options;
+    const xcodeProjectPath = `${ path.resolve(projectPath, 'ios', projectName) }.xcodeproj`;
 
     console.log(chalk.green.bold('%s was successfully created. \n'), projectName);
     console.log(chalk.green.bold('To run your app on Web:'));
-    console.log('  cd %s', destPath);
+    console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  npm run start:web \n'));
 
     console.log(chalk.green.bold('To build Web production version of your app:'));
-    console.log('  cd %s', destPath);
+    console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  npm run build:web \n'));
 
     console.log(chalk.green.bold('To run your app on iOS:'));
-    console.log('  cd %s', destPath);
+    console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  npm run start:ios'));
     console.log('  - or -');
-    console.log('  open %s project in Xcode', path.relative(destPath, xcodeProjectPath));
+    console.log('  open %s project in Xcode', path.relative(projectPath, xcodeProjectPath));
     console.log('  press the Run button \n');
 
     console.log(chalk.green.bold('To run your app on Android:'));
-    console.log('  cd %s', destPath);
+    console.log('  cd %s', projectPath);
     console.log('  Have an Android emulator running (quickest way to get started), or a device connected.');
     console.log(chalk.white.bold('  npm run start:android'));
     console.log('  - or -');
@@ -112,18 +105,18 @@ export class Generator {
     console.log('  press the Run button \n');
 
     console.log(chalk.green.bold('To run your app on Windows:'));
-    console.log('  cd %s', destPath);
+    console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  npm run start:windows'));
   }
 
-  private installDependencies() {
-    const { destPath } = this.options;
-    shell.cd(destPath);
+  private installDependencies(): void {
+    const { projectPath } = this.options;
+    shell.cd(projectPath);
 
     this.npmInstall(this.packageJson.devDependencies, 'devDependencies', ['--save-dev']);
     this.npmInstall(this.packageJson.dependencies, 'reactxp');
 
-    const peerDependencies = require(path.join(destPath, 'node_modules', 'reactxp', 'package.json')).peerDependencies;
+    const peerDependencies = require(path.join(projectPath, 'node_modules', 'reactxp', 'package.json')).peerDependencies;
     if (!peerDependencies) {
       console.log(chalk.red(`Missing react/react-native/react-native-windows peer dependencies in ReactXP's package.json. Aborting`));
       return shell.exit(1);
@@ -152,15 +145,11 @@ export class Generator {
     this.npmInstall(peerDependencies, 'peerDependencies');
   }
 
-  private npmInstall(deps: Dictionary, description: string, options: string[] = []) {
+  private npmInstall(deps: Dictionary, description: string, options: string[] = []): void {
     const packages = Object.keys(deps)
       .map((key: string) => `${ key }@${ deps[key] }`).join(' ');
 
-    let npmCommand = ['npm', 'install', packages, '--save-exact', '--ignore-scripts'];
-    if (options.length) {
-      npmCommand = npmCommand.concat(...options);
-    }
-
+    const npmCommand = ['npm', 'install', packages, '--save-exact', '--ignore-scripts', ...options];
     const npmInstall = npmCommand.join(' ');
 
     console.log(chalk.white.bold('\nInstalling %s. This might take a couple minutes.'), description);
@@ -172,23 +161,24 @@ export class Generator {
     }
   }
 
-  private setPackageJson() {
+  private setPackageJson(): void {
     const { templatePath, sourceType } = this.options;
     const packageJson = fs.readFileSync(path.join(templatePath, sourceType, '_package.json'));
     this.packageJson = JSON.parse(packageJson as any);
   }
 
-  private buildDestinationPath(templatePath: string, srcPath: string, patterns?: Dictionary) {
-    const destPath = path.resolve(this.options.destPath, path.relative(templatePath, srcPath));
+  private buildDestPath(srcPath: string, absolutePath: string): string {
+    const patterns = { ...this.projectPatterns, ...PATH_PATTERNS };
+    let destPath = path.resolve(this.options.projectPath, path.relative(srcPath, absolutePath));
 
-    if (patterns) {
-      return this.replace(destPath, patterns);
-    }
+    Object
+      .keys(patterns)
+      .forEach(regexp => destPath = destPath.replace(new RegExp(regexp, 'g'), patterns[regexp]));
 
     return destPath;
   }
 
-  private copy(srcPath: string, destPath: string, patterns?: Dictionary): void {
+  private copy(srcPath: string, destPath: string): void {
     if (fs.lstatSync(srcPath).isDirectory()) {
       if (!fs.existsSync(destPath)) {
         fs.mkdirSync(destPath);
@@ -201,34 +191,27 @@ export class Generator {
       if (this.isBinary(srcPath)) {
         fs.copyFileSync(srcPath, destPath);
       } else {
-        const content = fs.readFileSync(srcPath, 'utf8');
-
-        fs.writeFileSync(destPath, patterns ? this.replace(content, patterns) : content, {
-          encoding: 'utf8',
-          mode: permissions,
-        });
+        const content = template.render(fs.readFileSync(srcPath, 'utf8'), this.projectPatterns);
+        fs.writeFileSync(destPath, content, { encoding: 'utf8', mode: permissions });
       }
     }
   }
 
   private isBinary(srcPath: string): boolean {
-    return ['.png', '.jpg', '.jar', '.ico'].indexOf(path.extname(srcPath)) >= 0;
+    return ['.png', '.jpg', '.jar', '.ico', '.pfx'].indexOf(path.extname(srcPath)) >= 0;
   }
 
-  private walk(srcPath: string): string[] {
+  private walk(srcPath: string, ignorePaths: string[] = []): string[] {
+    const isIgnored = (file: string) => ignorePaths.some(p => file.indexOf(p) >= 0);
+
     if (!fs.lstatSync(srcPath).isDirectory()) {
-      return [srcPath];
+      return isIgnored(srcPath) ? [] : [srcPath];
     }
 
-    return [].concat.apply([srcPath], fs.readdirSync(srcPath).map(child => this.walk(path.join(srcPath, child))));
-  }
-
-  private replace = (content: string, patterns: Dictionary = {}): string => {
-    Object
-      .keys(patterns)
-      .forEach(regexp => content = content.replace(new RegExp(regexp, 'g'), patterns[regexp]));
-
-    return content;
+    return []
+      .concat
+      .apply([srcPath], fs.readdirSync(srcPath).map(child => this.walk(path.join(srcPath, child))))
+      .filter((absolutePath: string) => !isIgnored(absolutePath));
   }
 
 }

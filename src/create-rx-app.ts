@@ -1,72 +1,43 @@
-import minimist, { ParsedArgs } from 'minimist';
-import leftPad from 'left-pad';
+import commander from 'commander';
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import { Generator } from './generator';
 
-class ReactXPCLI {
-  private projectName: string | undefined;
-  private argv: ParsedArgs;
-
-  constructor(argv: ParsedArgs) {
-    this.projectName = argv._.shift();
-    this.argv = argv;
+const isValidProjectName = (projectName: string) => /^[$A-Z_][0-9A-Z_$]*$/i.test(projectName);
+const createRXApp = (projectName: string | undefined, javascript: boolean) => {
+  if (!projectName) {
+    console.log(chalk.red('Project name cannot be empty.'));
+    return process.exit();
   }
 
-  public run() {
-    if (this.isHelpOption()) {
-      return this.help();
-    }
-
-    if (!this.projectName) {
-      console.log(chalk.red('Project name cannot be empty.'));
-      return process.exit();
-    }
-
-    if (!this.isValidProjectName(this.projectName)) {
-      console.log(chalk.red('Project name - %s is not valid.'), this.projectName);
-      return process.exit();
-    }
-
-    if (fs.existsSync(this.projectName)) {
-      console.log(chalk.red('Directory %s is already exists.'), this.projectName);
-      return process.exit();
-    }
-
-    const CLI_PATH = process.cwd();
-    const PROJECT_PATH = path.join(CLI_PATH, this.projectName);
-    const TEMPLATE_PATH = path.resolve(__dirname, '..', 'template');
-
-    new Generator({
-      destPath: PROJECT_PATH,
-      projectName: this.projectName,
-      sourceType: 'typescript', // @TODO add CLI option
-      templatePath: TEMPLATE_PATH,
-    }).run();
+  if (!isValidProjectName(projectName)) {
+    console.log(chalk.red('Project name - %s is not valid.'), projectName);
+    process.exit();
   }
 
-  private help() {
-    console.log([
-      chalk.blue('====================================================='),
-      `${ chalk.blue('=') } ${ leftPad(chalk.green('ReactXP-CLI'), 40) } ${ leftPad(chalk.blue('='), 30) }`,
-      chalk.blue('====================================================='),
-    ].join('\n'));
-
-    console.log([
-      '',
-      ' Usage: reactxp-cli <ProjectName> [options]',
-      '',
-      ' Options:',
-      '  -h, --help     outputs usage information',
-      '',
-    ].join('\n'));
-
-    process.exit(0);
+  if (fs.existsSync(projectName)) {
+    console.log(chalk.red('Directory %s is already exists.'), projectName);
+    process.exit();
   }
 
-  private isValidProjectName = (projectName: string) => /^[$A-Z_][0-9A-Z_$]*$/i.test(projectName);
-  private isHelpOption = () => this.argv.h || this.argv.help;
+  new Generator({
+    projectName,
+    projectPath: path.join(process.cwd(), projectName),
+    sourceType: javascript ? 'javascript' : 'typescript',
+    templatePath: path.resolve(__dirname, '..', 'template'),
+  }).run();
+};
+
+const program = new commander.Command('create-rx-app')
+  .arguments('<project-directory>')
+  .usage(`${ chalk.green.bold('<project-directory>') } [options]`)
+  .option('-J, --javascript', 'use javascript')
+  .allowUnknownOption()
+  .parse(process.argv);
+
+if (!program.args.length) {
+  program.help();
 }
 
-new ReactXPCLI(minimist(process.argv.slice(2))).run();
+createRXApp(program.args.shift(), program.javascript);
