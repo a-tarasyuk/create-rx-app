@@ -32,7 +32,7 @@ const createRXApp = (projectName: string | undefined, javascript: boolean) => {
 const program = new commander.Command('create-rx-app')
   .arguments('<project-directory>')
   .usage(`${ chalk.green.bold('<project-directory>') } [options]`)
-  .option('-J, --javascript', 'use javascript')
+  .option('-J, --javascript', 'generate project in JavaScript')
   .allowUnknownOption()
   .parse(process.argv);
 
