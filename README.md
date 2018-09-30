@@ -10,6 +10,18 @@
 npm install create-rx-app -g
 ```
 
+## Usage
+### <abbr title="Command Line Interface">CLI</abbr>
+
+```shell
+Usage: create-rx-app <project-directory> [options]
+
+Options:
+
+  -J, --javascript  generate project in JavaScript
+  -h, --help        output usage information
+```
+
 ## Creating an App
 To create a new app, run:
 
@@ -26,10 +38,6 @@ This will create a directory called **AppName** inside the current working direc
 - `npm run start:windows` - runs the Windows version of the app
 - `npm start` - runs RN development server
 
----
+## License and Copyright
 
-To generate app with JavaScript source code need to add  `--javascript` option
-
-```shell
-create-rx-app AppName --javascript
-```
+This software is released under the terms of the [MIT license](https://github.com/a-tarasyuk/create-rx-app/blob/master/LICENSE.md).
