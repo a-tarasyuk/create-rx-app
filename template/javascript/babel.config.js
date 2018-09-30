@@ -3,11 +3,11 @@ module.exports = function(api) {
 
   if (process.env.RX_PLATFORM === 'web') {
     return {
-    presets: [
-      ['@babel/preset-env', { 'targets': { 'browsers': ['last 2 versions'] } }],
-      ['@babel/preset-react', {}],
-    ],
-    plugins: ['@babel/plugin-transform-runtime'],
+      presets: [
+        ['@babel/preset-env', { 'targets': { 'browsers': ['last 2 versions'] } }],
+        ['@babel/preset-react', {}],
+      ],
+      plugins: ['@babel/plugin-transform-runtime'],
     };
   }
 
