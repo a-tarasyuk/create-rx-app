@@ -33,6 +33,6 @@
     "webpack-merge": "4.1.4"
   },
   "dependencies": {
-    "reactxp": "1.4.0-rc.2"
+    "reactxp": "1.4.0"
   }
 }
