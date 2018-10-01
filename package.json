@@ -32,15 +32,17 @@
     "@types/minimist": "1.2.0",
     "@types/mustache": "0.8.31",
     "@types/node": "10.11.3",
-    "@types/shelljs": "0.8.0",
+    "@types/username": "3.0.0",
+    "@types/uuid": "3.4.4",
     "chalk": "2.4.1",
     "commander": "2.18.0",
     "fs-extra": "7.0.0",
     "husky": "1.0.1",
     "mustache": "3.0.0",
-    "shelljs": "0.8.2",
     "tslint": "5.11.0",
-    "typescript": "3.1.1"
+    "typescript": "3.1.1",
+    "username": "4.0.0",
+    "uuid": "3.3.2"
   },
   "bin": {
     "create-rx-app": "bin/create-rx-app.js"

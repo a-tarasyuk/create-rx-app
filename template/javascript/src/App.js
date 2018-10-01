@@ -44,7 +44,7 @@ export class App extends RX.Component {
       <RX.View style={ _styles.main }>
         <RX.View>
           <RX.Text style={ _styles.title }>Welcome to <RX.Text style={ _styles.name }>ReactXP</RX.Text></RX.Text>
-          <RX.Text style={ _styles.label }>To get started, edit /src/App.tsx</RX.Text>
+          <RX.Text style={ _styles.label }>To get started, edit /src/App.js</RX.Text>
         </RX.View>
 
         <RX.View style={ _styles.links }>

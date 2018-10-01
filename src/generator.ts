@@ -1,8 +1,11 @@
+import { execSync, spawnSync } from 'child_process';
 import template from 'mustache';
+import username from 'username';
 import chalk from 'chalk';
-import shell from 'shelljs';
+import uuid from 'uuid';
 import path from 'path';
 import fs from 'fs-extra';
+import os from 'os';
 
 interface Dictionary {
   [name: string]: any;
@@ -18,12 +21,9 @@ export interface GeneratorOptions {
 }
 
 const COMMON_FOLDER = 'common';
-const PATH_PATTERNS: Dictionary = {
-  '_eslintrc': '.eslintrc',
-  '_gitignore': '.gitignore',
-  '_tsconfig.json': 'tsconfig.json',
-  '_tslint.json': 'tslint.json',
-};
+const WINDOWS_FOLDER = 'windows';
+const IOS_FOLDER = 'ios';
+const { exit, chdir } = process;
 
 export class Generator {
   private projectPatterns: Dictionary = {};
@@ -49,6 +49,7 @@ export class Generator {
     fs.mkdirSync(projectPath);
     this.setPackageJson();
 
+    this.generateWindowsApp();
     this.generateApp();
     this.generatePackageJson();
     this.installDependencies();
@@ -57,28 +58,99 @@ export class Generator {
 
   private generateApp(): void {
     const { templatePath, sourceType } = this.options;
-    const ignorePaths = ['_package.json'];
+    const paths = [COMMON_FOLDER, sourceType].map(folderName => path.join(templatePath, folderName));
+    const ignoreFiles = ['_package.json'];
 
-    [COMMON_FOLDER, sourceType]
-      .map(folderName => path.join(templatePath, folderName))
-      .forEach(srcPath => (
-        this.walk(srcPath, ignorePaths)
-          .forEach((absolutePath: string) => this.copy(absolutePath, this.buildDestPath(srcPath, absolutePath)))
-      ));
+    const pathPatterns = {
+      ...this.projectPatterns,
+      '_eslintrc': '.eslintrc',
+      '_gitignore': '.gitignore',
+      '_tsconfig.json': 'tsconfig.json',
+      '_tslint.json': 'tslint.json',
+    };
+
+    paths.forEach(srcPath => (
+      this.walk(srcPath, ignoreFiles).forEach((absolutePath: string) => (
+        this.copy(absolutePath, this.buildDestPath(absolutePath, srcPath, pathPatterns), this.projectPatterns)
+      ))
+    ));
+  }
+
+  private generateWindowsApp(): void {
+    const { templatePath } = this.options;
+    const currentUser = username.sync();
+    const certificateThumbprint = this.buildSelfSignedCertificate(currentUser);
+    const windowsTemplatePath = path.join(templatePath, WINDOWS_FOLDER);
+
+    const contnetPatterns = {
+      ...this.projectPatterns,
+      ...certificateThumbprint && { certificateThumbprint },
+      currentUser,
+      packageGuid: uuid.v4(),
+      projectGuid: uuid.v4(),
+    };
+    const pathPatterns = { ...this.projectPatterns, _gitignore: '.gitignore' };
+    const ignoreFiles = certificateThumbprint ? ['ProjectTemplate_TemporaryKey.pfx'] : [];
+
+    this.walk(windowsTemplatePath, ignoreFiles).forEach((absolutePath: string) => (
+      this.copy(absolutePath, this.buildDestPath(absolutePath, templatePath, pathPatterns), contnetPatterns)
+    ));
+  }
+
+  private buildSelfSignedCertificate(currentUser: string): string {
+    const { projectPath, projectName } = this.options;
+
+    if (os.platform() !== 'win32') {
+      return '';
+    }
+
+    console.log('%s %s', chalk.blue.bold('[windows]'), chalk.white.bold('Generating self-signed certificate...'));
+    const certificateDestPath = path.join(projectPath, WINDOWS_FOLDER, projectName);
+    const certificateArgs = [
+      [
+        '$cert = New-SelfSignedCertificate -KeyUsage DigitalSignature -KeyExportPolicy Exportable -Subject',
+        `"CN=${ currentUser }" -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}Subject Type:End Entity")`,
+        `-CertStoreLocation "Cert:\\CurrentUser\\My"`,
+      ].join(' '),
+      '$pwd = ConvertTo-SecureString -String password -Force -AsPlainText',
+      `New-Item -ErrorAction Ignore -ItemType directory -Path ${ path.join(projectPath, WINDOWS_FOLDER, projectName) }`,
+      [
+        `Export-PfxCertificate -Cert "cert:\\CurrentUser\\My\\$($cert.Thumbprint)"`,
+        `-FilePath ${ path.join(projectPath, WINDOWS_FOLDER, projectName, projectName) }_TemporaryKey.pfx -Password $pwd`,
+      ].join(' '),
+      '$cert.Thumbprint',
+    ].join(';');
+
+    if (!fs.existsSync(certificateDestPath)) {
+      fs.mkdirpSync(certificateDestPath);
+    }
+
+    const { status, stdout } = spawnSync('powershell', ['-command', certificateArgs]);
+    if (status === 0) {
+      console.log('%s %s', chalk.blue.bold('[windows]'), chalk.green.bold('Self-signed certificate generated successfully.'));
+
+      const output = stdout.toString().trim().split('\n');
+      return output[output.length - 1];
+    }
+
+    console.log('%s %s', chalk.blue.bold('[windows]'), chalk.red.bold('Failed to generate Self-signed certificate.'));
+    console.log('%s %s', chalk.blue.bold('[windows]'), chalk.yellow.bold('Using Default Certificate. Use Visual Studio to renew it.'));
+    return '';
   }
 
   private generatePackageJson(): void {
     const { projectPath, projectName } = this.options;
     const packageJsonPath = path.resolve(projectPath, 'package.json');
     const packageJsonContent = {
-      ...this.packageJson, dependencies: {}, devDependencies: {}, name: projectName.toLowerCase(),
+      name: projectName.toLowerCase(), ...this.packageJson, dependencies: {}, devDependencies: {},
     };
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJsonContent, null, 2));
   }
 
   private printInstructions(): void {
     const { projectName, projectPath } = this.options;
-    const xcodeProjectPath = `${ path.resolve(projectPath, 'ios', projectName) }.xcodeproj`;
+    const xcodeProjectPath = `${ path.resolve(projectPath, IOS_FOLDER, projectName) }.xcodeproj`;
+    const windowsProjectPath = `${ path.resolve(projectPath, WINDOWS_FOLDER, projectName) }.sln`;
 
     console.log(chalk.green.bold('%s was successfully created. \n'), projectName);
     console.log(chalk.green.bold('To run your app on Web:'));
@@ -107,57 +179,49 @@ export class Generator {
     console.log(chalk.green.bold('To run your app on Windows:'));
     console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  npm run start:windows'));
+    console.log('  - or -');
+    console.log(chalk.white.bold('  open %s project in Visual Studio'), windowsProjectPath);
+    console.log('  press the Run button \n');
   }
 
   private installDependencies(): void {
     const { projectPath } = this.options;
-    shell.cd(projectPath);
+    chdir(projectPath);
 
-    this.npmInstall(this.packageJson.devDependencies, 'devDependencies', ['--save-dev']);
-    this.npmInstall(this.packageJson.dependencies, 'reactxp');
+    this.npmInstall(this.packageJson.devDependencies, 'dev dependencies', ['--save-dev']);
+    this.npmInstall({ reactxp: 'latest' }, 'ReactXP');
 
-    const peerDependencies = require(path.join(projectPath, 'node_modules', 'reactxp', 'package.json')).peerDependencies;
-    if (!peerDependencies) {
-      console.log(chalk.red(`Missing react/react-native/react-native-windows peer dependencies in ReactXP's package.json. Aborting`));
-      return shell.exit(1);
+    const requiredDeps = ['react', 'react-dom', 'react-native', 'react-native-windows'];
+    const reactxpPath = path.join(projectPath, 'node_modules', 'reactxp', 'package.json');
+    const peerDependencies = JSON.parse(fs.readFileSync(reactxpPath) as any).peerDependencies;
+
+    if (!peerDependencies || requiredDeps.some(d => !peerDependencies[d])) {
+      const requiredDepsList = requiredDeps.map(d => chalk.bgYellow(d)).join(', ');
+      console.log(chalk.bold.yellow(`Missing required %s dependencies.`), requiredDepsList);
+      console.log(chalk.bold.yellow(`Need to install the following %s dependencies manually`), requiredDepsList);
     }
 
-    if (!peerDependencies.react) {
-      console.log(chalk.red(`Missing react peer dependency in ReactXP's package.json. Aborting`));
-      return shell.exit(1);
-    }
-
-    if (!peerDependencies['react-dom']) {
-      console.log(chalk.red(`Missing react-dom peer dependency in ReactXP's package.json. Aborting`));
-      return shell.exit(1);
-    }
-
-    if (!peerDependencies['react-native']) {
-      console.log(chalk.red(`Missing react-native peer dependency in ReactXP's package.json. Aborting`));
-      return shell.exit(1);
-    }
-
-    if (!peerDependencies['react-native-windows']) {
-      console.log(chalk.red(`Missing react-native-windows peer dependency in ReactXP's package.json. Aborting`));
-      return shell.exit(1);
-    }
-
-    this.npmInstall(peerDependencies, 'peerDependencies');
+    this.npmInstall({
+      ...peerDependencies,
+      'react-native-windows': '0.55.0-rc.0', /* @TODO need to remove after the new version of ReactXP will be released */
+    }, 'dependencies');
   }
 
   private npmInstall(deps: Dictionary, description: string, options: string[] = []): void {
     const packages = Object.keys(deps)
       .map((key: string) => `${ key }@${ deps[key] }`).join(' ');
 
-    const npmCommand = ['npm', 'install', packages, '--save-exact', '--ignore-scripts', ...options];
+    const npmCommand = ['npm', 'install', packages, '--save-exact', '--loglevel=error', '--ignore-scripts', ...options];
     const npmInstall = npmCommand.join(' ');
 
-    console.log(chalk.white.bold('\nInstalling %s. This might take a couple minutes.'), description);
-    console.log(chalk.white('%s'), npmInstall);
+    console.log('%s %s', chalk.blue.bold('[npm]'), chalk.white.bold(`Installing ${ description }...`));
+    console.log(chalk.grey.bold('%s'), npmInstall);
 
-    if (shell.exec(npmInstall).code !== 0) {
+    try {
+      execSync(npmInstall, { stdio: 'inherit' });
+    } catch {
       console.log(chalk.red('NPM Error: could not install %s. Aborting.'), description);
-      shell.exit(1);
+      exit(1);
     }
   }
 
@@ -167,9 +231,8 @@ export class Generator {
     this.packageJson = JSON.parse(packageJson as any);
   }
 
-  private buildDestPath(srcPath: string, absolutePath: string): string {
-    const patterns = { ...this.projectPatterns, ...PATH_PATTERNS };
-    let destPath = path.resolve(this.options.projectPath, path.relative(srcPath, absolutePath));
+  private buildDestPath(absolutePath: string, rootPath: string, patterns: Dictionary): string {
+    let destPath = path.resolve(this.options.projectPath, path.relative(rootPath, absolutePath));
 
     Object
       .keys(patterns)
@@ -178,7 +241,7 @@ export class Generator {
     return destPath;
   }
 
-  private copy(srcPath: string, destPath: string): void {
+  private copy(srcPath: string, destPath: string, patterns: Dictionary): void {
     if (fs.lstatSync(srcPath).isDirectory()) {
       if (!fs.existsSync(destPath)) {
         fs.mkdirSync(destPath);
@@ -191,7 +254,7 @@ export class Generator {
       if (this.isBinary(srcPath)) {
         fs.copyFileSync(srcPath, destPath);
       } else {
-        const content = template.render(fs.readFileSync(srcPath, 'utf8'), this.projectPatterns);
+        const content = template.render(fs.readFileSync(srcPath, 'utf8'), patterns);
         fs.writeFileSync(destPath, content, { encoding: 'utf8', mode: permissions });
       }
     }
