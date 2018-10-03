@@ -21,6 +21,8 @@ const _styles = {
   }),
 
   name: RX.Styles.createTextStyle({
+    fontWeight: 'bold',
+    fontSize: 36,
     color: '#42B74F'
   }),
 
