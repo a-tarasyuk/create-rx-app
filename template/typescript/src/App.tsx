@@ -16,11 +16,11 @@ const _styles = {
   label: RX.Styles.createTextStyle({
     marginTop: 10,
     textAlign: 'center',
-    fontSize: 16
+    fontSize: 16,
   }),
 
   name: RX.Styles.createTextStyle({
-    color: '#42B74F'
+    color: '#42B74F',
   }),
 
   links: RX.Styles.createViewStyle({

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{01403779-f2a8-41ce-a2f0-3414b4090290}</ProjectGuid>
+    <ProjectGuid>{{ projectGuid }}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>{{ ProjectTemplate }}</RootNamespace>
@@ -17,7 +17,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>{{ ProjectTemplate }}_TemporaryKey.pfx</PackageCertificateKeyFile>
-  
+    {{#certificateThumbprint}}<PackageCertificateThumbprint>{{ certificateThumbprint }}</PackageCertificateThumbprint>{{/certificateThumbprint}}
+
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <DependencyConfiguration>Debug</DependencyConfiguration>
   </PropertyGroup>

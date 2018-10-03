@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="d1922f7b-d81f-4087-a725-812eab5ce308"
-    Publisher="CN=tarasyuk"
+    Name="{{ packageGuid }}"
+    Publisher="CN={{ currentUser }}"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="d1922f7b-d81f-4087-a725-812eab5ce308" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="{{ packageGuid }}" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>{{ DisplayName }}</DisplayName>

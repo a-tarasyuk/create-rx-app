@@ -4,21 +4,22 @@ import path from 'path';
 import fs from 'fs';
 import { Generator } from './generator';
 
+const { exit } = process;
 const isValidProjectName = (projectName: string) => /^[$A-Z_][0-9A-Z_$]*$/i.test(projectName);
 const createRXApp = (projectName: string | undefined, javascript: boolean) => {
   if (!projectName) {
     console.log(chalk.red('Project name cannot be empty.'));
-    return process.exit();
+    return exit();
   }
 
   if (!isValidProjectName(projectName)) {
     console.log(chalk.red('Project name - %s is not valid.'), projectName);
-    process.exit();
+    exit();
   }
 
   if (fs.existsSync(projectName)) {
     console.log(chalk.red('Directory %s is already exists.'), projectName);
-    process.exit();
+    exit();
   }
 
   new Generator({
