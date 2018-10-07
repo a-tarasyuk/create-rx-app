@@ -15,7 +15,7 @@
     "skipLibCheck": true,
     "declaration": true,
     "noResolve": false,
-    "module": "commonjs",
+    "module": "es2015",
     "target": "es5",
     "noEmit": true,
     "jsx": "react",

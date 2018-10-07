@@ -23,7 +23,7 @@ const config = {
     rules: [{
       test: /\.tsx?$/,
       loader: 'ts-loader',
-      options: { transpileOnly: true },
+      options: { transpileOnly: true, configFile: TS_CONFIG_PATH },
       exclude: /node_modules/,
     }]
   },
