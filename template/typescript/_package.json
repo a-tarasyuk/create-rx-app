@@ -6,13 +6,13 @@
     "start:windows": "react-native run-windows",
     "start:android": "node node_modules/react-native/local-cli/cli.js run-android",
     "start:ios": "node node_modules/react-native/local-cli/cli.js run-ios",
-    "start:web": "webpack-dev-server --config=web/webpack/webpack.dev.js --progress --colors",
+    "start:web": "webpack-dev-server --config=web/webpack/webpack.dev.js --progress --colors --mode=development",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "build:web": "webpack --config=web/webpack/webpack.prod.js --progress --colors",
+    "build:web": "webpack --config=web/webpack/webpack.prod.js --progress --colors --mode=production",
     "lint": "tslint -p tsconfig.json -r tslint.json"
   },
   "devDependencies": {
-    "fork-ts-checker-webpack-plugin": "0.4.9",
+    "fork-ts-checker-webpack-plugin": "0.4.10",
     "html-webpack-plugin": "3.2.0",
     "react-native-typescript-transformer": "1.2.10",
     "rnpm-plugin-windows": "0.2.8",

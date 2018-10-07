@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -6,7 +7,7 @@ const DIST_PATH = path.join(ROOT_PATH, 'dist-web');
 const APP_PATH = path.join(ROOT_PATH, 'src');
 const WEB_PATH = path.join(ROOT_PATH, 'web');
 
-const config = {
+const buildConfig = (env, argv) => ({
   entry: APP_PATH,
   output: {
     filename: 'bundle.js',
@@ -14,7 +15,7 @@ const config = {
   },
 
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
 
   module: {
@@ -25,8 +26,9 @@ const config = {
   },
 
   plugins: [
+    new webpack.DefinePlugin({ __DEV__: argv.mode === 'development' }),
     new HtmlWebpackPlugin({ inject: true, template: path.join(WEB_PATH, 'template.html') }),
   ],
-};
+});
 
-module.exports = { config, APP_PATH, DIST_PATH };
+module.exports = { buildConfig, APP_PATH, DIST_PATH };

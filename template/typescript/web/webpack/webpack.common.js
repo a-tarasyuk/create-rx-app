@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -8,7 +9,7 @@ const WEB_PATH = path.join(ROOT_PATH, 'web');
 const TS_CONFIG_PATH = path.join(ROOT_PATH, 'web', 'tsconfig.json');
 const TSLINT_CONFIG_PATH = path.join(ROOT_PATH, 'tslint.json');
 
-const config = {
+const buildConfig = (env, argv) => ({
   entry: APP_PATH,
   output: {
     filename: 'bundle.js',
@@ -16,22 +17,23 @@ const config = {
   },
 
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js'],
   },
 
   module: {
     rules: [{
       test: /\.tsx?$/,
       loader: 'ts-loader',
-      options: { transpileOnly: true },
+      options: { transpileOnly: true, configFile: TS_CONFIG_PATH },
       exclude: /node_modules/,
-    }]
+    }],
   },
 
   plugins: [
+    new webpack.DefinePlugin({ __DEV__: argv.mode === 'development' }),
     new ForkTsCheckerWebpackPlugin({ tsconfig: TS_CONFIG_PATH, tslint: TSLINT_CONFIG_PATH }),
     new HtmlWebpackPlugin({ inject: true, template: path.join(WEB_PATH, 'template.html') }),
   ],
-};
+});
 
-module.exports = { config, APP_PATH, DIST_PATH };
+module.exports = { buildConfig, APP_PATH, DIST_PATH };
