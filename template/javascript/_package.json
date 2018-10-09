@@ -3,7 +3,7 @@
   "main": "index.js",
   "version": "0.0.1",
   "scripts": {
-    "start:windows": "react-native run-windows",
+    "start:windows": "node node_modules/react-native/local-cli/cli.js run-windows",
     "start:android": "node node_modules/react-native/local-cli/cli.js run-android",
     "start:ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "start:web": "cross-env RX_PLATFORM=web webpack-dev-server --config=web/webpack/webpack.dev.js --progress --colors --mode=development",

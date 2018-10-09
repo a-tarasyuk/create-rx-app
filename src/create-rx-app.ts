@@ -13,12 +13,12 @@ const createRXApp = (projectName: string | undefined, javascript: boolean) => {
   }
 
   if (!isValidProjectName(projectName)) {
-    console.log(chalk.red('Project name - %s is not valid.'), projectName);
+    console.log(chalk.red(`Project name - ${ chalk.red.bold(projectName) } is not valid.`));
     exit();
   }
 
   if (fs.existsSync(projectName)) {
-    console.log(chalk.red('Directory %s is already exists.'), projectName);
+    console.log(chalk.red(`'Directory ${ chalk.red.bold(projectName) } is already exists.`));
     exit();
   }
 

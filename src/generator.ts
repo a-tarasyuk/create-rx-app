@@ -1,4 +1,5 @@
 import { execSync, spawnSync } from 'child_process';
+import { omit } from 'lodash';
 import template from 'mustache';
 import username from 'username';
 import chalk from 'chalk';
@@ -7,11 +8,11 @@ import path from 'path';
 import fs from 'fs-extra';
 import os from 'os';
 
+type SourceType = 'javascript' | 'typescript';
+
 interface Dictionary {
   [name: string]: any;
 }
-
-type SourceType = 'javascript' | 'typescript';
 
 export interface GeneratorOptions {
   templatePath: string;
@@ -20,9 +21,10 @@ export interface GeneratorOptions {
   sourceType: SourceType;
 }
 
-const COMMON_FOLDER = 'common';
 const WINDOWS_FOLDER = 'windows';
+const COMMON_FOLDER = 'common';
 const IOS_FOLDER = 'ios';
+
 const { exit, chdir } = process;
 
 export class Generator {
@@ -34,9 +36,9 @@ export class Generator {
     const { projectName } = options;
 
     this.projectPatterns = {
-      DisplayName: projectName,
-      ProjectTemplate: projectName,
-      projecttemplate: projectName.toLowerCase(),
+      ProjectName: projectName,
+      displayName: projectName,
+      projectname: projectName.toLowerCase(),
     };
 
     this.options = options;
@@ -49,8 +51,8 @@ export class Generator {
     fs.mkdirSync(projectPath);
     this.setPackageJson();
 
-    this.generateWindowsApp();
     this.generateApp();
+    this.generateWindowsApp();
     this.generatePackageJson();
     this.installDependencies();
     this.printInstructions();
@@ -58,8 +60,8 @@ export class Generator {
 
   private generateApp(): void {
     const { templatePath, sourceType } = this.options;
+    const ignorePaths = ['_package.json', path.join(templatePath, COMMON_FOLDER, WINDOWS_FOLDER)];
     const paths = [COMMON_FOLDER, sourceType].map(folderName => path.join(templatePath, folderName));
-    const ignoreFiles = ['_package.json'];
 
     const pathPatterns = {
       ...this.projectPatterns,
@@ -70,7 +72,7 @@ export class Generator {
     };
 
     paths.forEach(srcPath => (
-      this.walk(srcPath, ignoreFiles).forEach((absolutePath: string) => (
+      this.walk(srcPath, ignorePaths).forEach((absolutePath: string) => (
         this.copy(absolutePath, this.buildDestPath(absolutePath, srcPath, pathPatterns), this.projectPatterns)
       ))
     ));
@@ -80,7 +82,8 @@ export class Generator {
     const { templatePath } = this.options;
     const currentUser = username.sync();
     const certificateThumbprint = this.buildSelfSignedCertificate(currentUser);
-    const windowsTemplatePath = path.join(templatePath, WINDOWS_FOLDER);
+    const commonTemplatePath = path.join(templatePath, COMMON_FOLDER);
+    const windowsTemplatePath = path.join(commonTemplatePath, WINDOWS_FOLDER);
 
     const contnetPatterns = {
       ...this.projectPatterns,
@@ -90,10 +93,10 @@ export class Generator {
       projectGuid: uuid.v4(),
     };
     const pathPatterns = { ...this.projectPatterns, _gitignore: '.gitignore' };
-    const ignoreFiles = certificateThumbprint ? ['ProjectTemplate_TemporaryKey.pfx'] : [];
+    const ignoreFiles = certificateThumbprint ? ['ProjectName_TemporaryKey.pfx'] : [];
 
     this.walk(windowsTemplatePath, ignoreFiles).forEach((absolutePath: string) => (
-      this.copy(absolutePath, this.buildDestPath(absolutePath, templatePath, pathPatterns), contnetPatterns)
+      this.copy(absolutePath, this.buildDestPath(absolutePath, commonTemplatePath, pathPatterns), contnetPatterns)
     ));
   }
 
@@ -140,11 +143,10 @@ export class Generator {
 
   private generatePackageJson(): void {
     const { projectPath, projectName } = this.options;
-    const packageJsonPath = path.resolve(projectPath, 'package.json');
-    const packageJsonContent = {
-      name: projectName.toLowerCase(), ...this.packageJson, dependencies: {}, devDependencies: {},
-    };
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJsonContent, null, 2));
+
+    fs.writeFileSync(path.resolve(projectPath, 'package.json'), JSON.stringify({
+      name: projectName.toLowerCase(), ...omit(this.packageJson, ['devDependencies', 'peerDependencies', 'dependencies']),
+    }, null, 2));
   }
 
   private printInstructions(): void {
@@ -185,26 +187,12 @@ export class Generator {
   }
 
   private installDependencies(): void {
+    const { devDependencies, peerDependencies, dependencies } = this.packageJson;
     const { projectPath } = this.options;
     chdir(projectPath);
 
-    this.npmInstall(this.packageJson.devDependencies, 'dev dependencies', ['--save-dev']);
-    this.npmInstall({ reactxp: 'latest' }, 'ReactXP');
-
-    const requiredDeps = ['react', 'react-dom', 'react-native', 'react-native-windows'];
-    const reactxpPath = path.join(projectPath, 'node_modules', 'reactxp', 'package.json');
-    const peerDependencies = JSON.parse(fs.readFileSync(reactxpPath) as any).peerDependencies;
-
-    if (!peerDependencies || requiredDeps.some(d => !peerDependencies[d])) {
-      const requiredDepsList = requiredDeps.map(d => chalk.bgYellow(d)).join(', ');
-      console.log(chalk.bold.yellow(`Missing required %s dependencies.`), requiredDepsList);
-      console.log(chalk.bold.yellow(`Need to install the following %s dependencies manually`), requiredDepsList);
-    }
-
-    this.npmInstall({
-      ...peerDependencies,
-      'react-native-windows': '0.55.0-rc.0', /* @TODO need to remove after the new version of ReactXP will be released */
-    }, 'dependencies');
+    this.npmInstall(devDependencies, 'dev dependencies', ['--save-dev']);
+    this.npmInstall({ ...dependencies, ...peerDependencies }, 'dependencies');
   }
 
   private npmInstall(deps: Dictionary, description: string, options: string[] = []): void {
@@ -227,16 +215,19 @@ export class Generator {
 
   private setPackageJson(): void {
     const { templatePath, sourceType } = this.options;
-    const packageJson = fs.readFileSync(path.join(templatePath, sourceType, '_package.json'));
-    this.packageJson = JSON.parse(packageJson as any);
+
+    this.packageJson = {
+      ...JSON.parse(fs.readFileSync(path.join(templatePath, COMMON_FOLDER, '_package.json')) as any),
+      ...JSON.parse(fs.readFileSync(path.join(templatePath, sourceType, '_package.json')) as any),
+    };
   }
 
-  private buildDestPath(absolutePath: string, rootPath: string, patterns: Dictionary): string {
-    let destPath = path.resolve(this.options.projectPath, path.relative(rootPath, absolutePath));
+  private buildDestPath(absolutePath: string, relativeTo: string, patterns: Dictionary): string {
+    let destPath = path.resolve(this.options.projectPath, path.relative(relativeTo, absolutePath));
 
     Object
       .keys(patterns)
-      .forEach(regexp => destPath = destPath.replace(new RegExp(regexp, 'g'), patterns[regexp]));
+      .forEach(regexp => destPath = destPath.replace(new RegExp(`\\b${ regexp }`, 'g'), patterns[regexp]));
 
     return destPath;
   }
