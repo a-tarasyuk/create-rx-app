@@ -7,8 +7,8 @@
     <ProjectGuid>{{ projectGuid }}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>{{ ProjectTemplate }}</RootNamespace>
-    <AssemblyName>{{ ProjectTemplate }}</AssemblyName>
+    <RootNamespace>{{ ProjectName }}</RootNamespace>
+    <AssemblyName>{{ ProjectName }}</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -16,7 +16,7 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>{{ ProjectTemplate }}_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>{{ ProjectName }}_TemporaryKey.pfx</PackageCertificateKeyFile>
     {{#certificateThumbprint}}<PackageCertificateThumbprint>{{ certificateThumbprint }}</PackageCertificateThumbprint>{{/certificateThumbprint}}
 
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -189,7 +189,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="{{ ProjectTemplate }}_TemporaryKey.pfx" />
+    <None Include="{{ ProjectName }}_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />

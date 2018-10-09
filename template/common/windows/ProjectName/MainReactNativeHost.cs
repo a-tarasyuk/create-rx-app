@@ -3,7 +3,7 @@ using ReactNative.Modules.Core;
 using ReactNative.Shell;
 using System.Collections.Generic;
 
-namespace {{ ProjectTemplate }}
+namespace {{ ProjectName }}
 {
     class MainReactNativeHost : ReactNativeHost
     {
