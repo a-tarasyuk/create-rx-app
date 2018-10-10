@@ -1179,7 +1179,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}"
+				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/{{ ProjectName }}.app/{{ ProjectName }}";
 			};
@@ -1197,7 +1197,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}"
+				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/{{ ProjectName }}.app/{{ ProjectName }}";
 			};
@@ -1216,7 +1216,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}"
+				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}";
 				PRODUCT_NAME = {{ ProjectName }};
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1234,7 +1234,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}"
+				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}";
 				PRODUCT_NAME = {{ ProjectName }};
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1258,7 +1258,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}-tvOS"
+				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1284,7 +1284,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}-tvOS"
+				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1309,7 +1309,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}-tvOSTests"
+				PRODUCT_BUNDLE_IDENTIFIER = "com.create.RX.app.{{ ProjectName }}-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/{{ ProjectName }}-tvOS.app/{{ ProjectName }}-tvOS";
