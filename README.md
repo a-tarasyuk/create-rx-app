@@ -19,6 +19,7 @@ Usage: create-rx-app <project-directory> [options]
 Options:
 
   -J, --javascript  generate project in JavaScript
+  -Y, --yarn        use yarn as package manager
   -h, --help        output usage information
 ```
 
