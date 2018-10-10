@@ -1,5 +1,3 @@
-import { execSync, spawnSync } from 'child_process';
-import { omit } from 'lodash';
 import template from 'mustache';
 import username from 'username';
 import chalk from 'chalk';
@@ -7,25 +5,24 @@ import uuid from 'uuid';
 import path from 'path';
 import fs from 'fs-extra';
 import os from 'os';
-
-type SourceType = 'javascript' | 'typescript';
-
-interface Dictionary {
-  [name: string]: any;
-}
+import { omit } from 'lodash';
+import { spawnSync } from 'child_process';
+import { PackageManager } from './package-manager';
+import { Dictionary, SourceType } from './types';
 
 export interface GeneratorOptions {
   templatePath: string;
   projectName: string;
   projectPath: string;
   sourceType: SourceType;
+  yarn: boolean;
 }
 
 const WINDOWS_FOLDER = 'windows';
 const COMMON_FOLDER = 'common';
 const IOS_FOLDER = 'ios';
 
-const { exit, chdir } = process;
+const { chdir } = process;
 
 export class Generator {
   private projectPatterns: Dictionary = {};
@@ -150,22 +147,23 @@ export class Generator {
   }
 
   private printInstructions(): void {
-    const { projectName, projectPath } = this.options;
+    const { projectName, projectPath, yarn } = this.options;
+    const commandName = yarn ? 'yarn' : 'npm';
     const xcodeProjectPath = `${ path.resolve(projectPath, IOS_FOLDER, projectName) }.xcodeproj`;
     const windowsProjectPath = `${ path.resolve(projectPath, WINDOWS_FOLDER, projectName) }.sln`;
 
     console.log(chalk.green.bold('%s was successfully created. \n'), projectName);
     console.log(chalk.green.bold('To run your app on Web:'));
     console.log('  cd %s', projectPath);
-    console.log(chalk.white.bold('  npm run start:web \n'));
+    console.log(chalk.white.bold('  %s run start:web \n'), commandName);
 
     console.log(chalk.green.bold('To build Web production version of your app:'));
     console.log('  cd %s', projectPath);
-    console.log(chalk.white.bold('  npm run build:web \n'));
+    console.log(chalk.white.bold('  %s run build:web \n'), commandName);
 
     console.log(chalk.green.bold('To run your app on iOS:'));
     console.log('  cd %s', projectPath);
-    console.log(chalk.white.bold('  npm run start:ios'));
+    console.log(chalk.white.bold('  %s run start:ios'), commandName);
     console.log('  - or -');
     console.log('  open %s project in Xcode', path.relative(projectPath, xcodeProjectPath));
     console.log('  press the Run button \n');
@@ -173,14 +171,14 @@ export class Generator {
     console.log(chalk.green.bold('To run your app on Android:'));
     console.log('  cd %s', projectPath);
     console.log('  Have an Android emulator running (quickest way to get started), or a device connected.');
-    console.log(chalk.white.bold('  npm run start:android'));
+    console.log(chalk.white.bold('  %s run start:android'), commandName);
     console.log('  - or -');
     console.log(chalk.white.bold('  open android/ project in Android Studio'));
     console.log('  press the Run button \n');
 
     console.log(chalk.green.bold('To run your app on Windows:'));
     console.log('  cd %s', projectPath);
-    console.log(chalk.white.bold('  npm run start:windows'));
+    console.log(chalk.white.bold('  %s run start:windows'), commandName);
     console.log('  - or -');
     console.log(chalk.white.bold('  open %s project in Visual Studio'), windowsProjectPath);
     console.log('  press the Run button \n');
@@ -188,29 +186,12 @@ export class Generator {
 
   private installDependencies(): void {
     const { devDependencies, peerDependencies, dependencies } = this.packageJson;
-    const { projectPath } = this.options;
+    const { projectPath, yarn } = this.options;
+    const packageManager = new PackageManager(yarn);
+
     chdir(projectPath);
-
-    this.npmInstall(devDependencies, 'dev dependencies', ['--save-dev']);
-    this.npmInstall({ ...dependencies, ...peerDependencies }, 'dependencies');
-  }
-
-  private npmInstall(deps: Dictionary, description: string, options: string[] = []): void {
-    const packages = Object.keys(deps)
-      .map((key: string) => `${ key }@${ deps[key] }`).join(' ');
-
-    const npmCommand = ['npm', 'install', packages, '--save-exact', '--loglevel=error', '--ignore-scripts', ...options];
-    const npmInstall = npmCommand.join(' ');
-
-    console.log('%s %s', chalk.blue.bold('[npm]'), chalk.white.bold(`Installing ${ description }...`));
-    console.log(chalk.grey.bold('%s'), npmInstall);
-
-    try {
-      execSync(npmInstall, { stdio: 'inherit' });
-    } catch {
-      console.log(chalk.red('NPM Error: could not install %s. Aborting.'), description);
-      exit(1);
-    }
+    packageManager.install(devDependencies, 'dev dependencies', true);
+    packageManager.install({ ...dependencies, ...peerDependencies }, 'dependencies');
   }
 
   private setPackageJson(): void {
@@ -267,5 +248,4 @@ export class Generator {
       .apply([srcPath], fs.readdirSync(srcPath).map(child => this.walk(path.join(srcPath, child))))
       .filter((absolutePath: string) => !isIgnored(absolutePath));
   }
-
 }
