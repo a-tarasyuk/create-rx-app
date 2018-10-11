@@ -1,4 +1,5 @@
 import * as RX from 'reactxp';
+import React from 'react';
 
 const _styles = {
   main: RX.Styles.createViewStyle({
