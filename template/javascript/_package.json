@@ -3,7 +3,7 @@
   "main": "index.js",
   "version": "0.0.1",
   "scripts": {
-    "start:windows": "node node_modules/react-native/local-cli/cli.js run-windows",
+    "start:windows": "node node_modules/react-native/local-cli/cli.js run-windows -- --reset",
     "start:android": "node node_modules/react-native/local-cli/cli.js run-android",
     "start:ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "start:web": "cross-env RX_PLATFORM=web webpack-dev-server --config=web/webpack/webpack.dev.js --progress --colors --mode=development",
@@ -25,7 +25,7 @@
     "eslint-plugin-react": "7.11.1",
     "eslint-watch": "4.0.2",
     "html-webpack-plugin": "3.2.0",
-    "metro-react-native-babel-preset": "0.48.0",
+    "metro-react-native-babel-preset": "0.48.1",
     "rnpm-plugin-windows": "0.2.8",
     "webpack": "4.20.2",
     "webpack-cli": "3.1.2",
