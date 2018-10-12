@@ -1,5 +1,8 @@
 module.exports = function(api) {
   api.cache.forever();
+  const commonPlugins = [
+    ['@babel/proposal-decorators', { legacy: true }],
+  ];
 
   if (process.env.RX_PLATFORM === 'web') {
     return {
@@ -9,6 +12,7 @@ module.exports = function(api) {
         '@babel/typescript',
       ],
       plugins: [
+        ...commonPlugins,
         '@babel/plugin-transform-runtime',
         '@babel/proposal-object-rest-spread',
         '@babel/proposal-class-properties',
@@ -18,6 +22,6 @@ module.exports = function(api) {
 
   return {
     presets: ['module:metro-react-native-babel-preset'],
-    plugins: [],
+    plugins: [...commonPlugins],
   };
 };
