@@ -1,5 +1,5 @@
-import * as RX from 'reactxp';
 import React from 'react';
+import RX from 'reactxp';
 
 const _styles = {
   main: RX.Styles.createViewStyle({
@@ -34,6 +34,7 @@ const _styles = {
   }),
 
   link: RX.Styles.createLinkStyle({
+    textDecorationLine: 'underline',
     paddingRight: 5,
     paddingLeft: 5,
     color: '#0070E0',

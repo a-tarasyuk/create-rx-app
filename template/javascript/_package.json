@@ -3,12 +3,13 @@
   "main": "index.js",
   "version": "0.0.1",
   "scripts": {
-    "start:windows": "node node_modules/react-native/local-cli/cli.js run-windows -- --reset",
-    "start:android": "node node_modules/react-native/local-cli/cli.js run-android",
-    "start:ios": "node node_modules/react-native/local-cli/cli.js run-ios",
-    "start:web": "cross-env RX_PLATFORM=web webpack-dev-server --config=web/webpack/webpack.dev.js --progress --colors --mode=development",
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "build:web": "cross-env RX_PLATFORM=web webpack --config=web/webpack/webpack.prod.js --progress --colors --mode=production",
+    "start:native": "node node_modules/react-native/local-cli/cli.js",
+    "start:android": "npm run start:native -- run-android",
+    "start:ios": "npm run start:native -- run-ios",
+    "start:windows": "npm run start:native -- run-windows",
+    "start:web": "cross-env RX_PLATFORM=web webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development",
+    "start": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
+    "build:web": "cross-env RX_PLATFORM=web webpack --config=web/webpack/prod.js --progress --colors --mode=production",
     "lint": "esw src/**"
   },
   "devDependencies": {

@@ -1,7 +1,8 @@
 {
-  "extends": "tslint:recommended",
+  "extends": ["tslint:recommended", "tslint-react"],
   "rules": {
     "object-literal-sort-keys": false,
+    "jsx-curly-spacing": ["always"],
     "max-line-length": [true, 140],
     "interface-name": [true, "never-prefix"],
     "variable-name": false,

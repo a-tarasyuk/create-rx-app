@@ -1,5 +1,5 @@
 import React from 'react';
-import * as RX from 'reactxp';
+import RX from 'reactxp';
 import { App } from './App';
 import { DEBUG, DEV } from './config';
 
