@@ -4,9 +4,9 @@
   },
 
   "peerDependencies": {
-    "react": "16.5.1",
-    "react-dom": "16.5.1",
-    "react-native": "0.57.2",
+    "react": "16.6.0-alpha.8af6728",
+    "react-dom": "16.6.0-alpha.8af6728",
+    "react-native": "0.57.3",
     "react-native-windows": "0.57.0-rc.0"
   }
 }
