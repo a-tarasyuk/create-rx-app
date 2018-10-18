@@ -7,7 +7,7 @@ import { Dictionary } from './types';
 import { Generator } from './generator';
 
 const { exit } = process;
-const isValidProjectName = (projectName: string): boolean => /^[$A-Z_][0-9A-Z_$]*$/i.test(projectName);
+const isValidProjectName = (projectName: string): boolean => /^[$A-Z_][0-9A-Z_$]*$/i.test(projectName) && projectName !== 'React';
 const yarnExists = (): boolean => spawnSync('yarn', ['-v']).status === 0;
 
 const createRXApp = (projectName: string | undefined, options: Dictionary) => {
@@ -18,19 +18,19 @@ const createRXApp = (projectName: string | undefined, options: Dictionary) => {
 
   if (!isValidProjectName(projectName)) {
     console.log(chalk.red(`Project name - ${ chalk.red.bold(projectName) } is not valid.`));
-    exit();
+    return exit();
   }
 
   if (fs.existsSync(projectName)) {
-    console.log(chalk.red(`'Directory ${ chalk.red.bold(projectName) } is already exists.`));
-    exit();
+    console.log(chalk.red(`Directory ${ chalk.red.bold(projectName) } is already exists.`));
+    return exit();
   }
 
   if (options.yarn && !yarnExists()) {
     const yarnRedBold = chalk.red.bold('YARN');
     console.log(chalk.red(`${ yarnRedBold } does not exist.`));
     console.log(chalk.red(`Please install ${ yarnRedBold } https://yarnpkg.com/docs/install or use ${ chalk.red.bold('NPM') }`));
-    exit();
+    return exit();
   }
 
   new Generator({
