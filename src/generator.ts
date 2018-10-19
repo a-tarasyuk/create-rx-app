@@ -105,7 +105,9 @@ export class Generator {
     }
 
     console.log('%s %s', chalk.blue.bold('[windows]'), chalk.white.bold('Generating self-signed certificate...'));
+
     const certificateDestPath = path.join(projectPath, WINDOWS_FOLDER, projectName);
+    const certificateFileDestPath = path.join(certificateDestPath, projectName);
     const certificateArgs = [
       [
         '$cert = New-SelfSignedCertificate -KeyUsage DigitalSignature -KeyExportPolicy Exportable -Subject',
@@ -113,10 +115,10 @@ export class Generator {
         `-CertStoreLocation "Cert:\\CurrentUser\\My"`,
       ].join(' '),
       '$pwd = ConvertTo-SecureString -String password -Force -AsPlainText',
-      `New-Item -ErrorAction Ignore -ItemType directory -Path ${ path.join(projectPath, WINDOWS_FOLDER, projectName) }`,
+      `New-Item -ErrorAction Ignore -ItemType directory -Path ${ certificateDestPath }`,
       [
         `Export-PfxCertificate -Cert "cert:\\CurrentUser\\My\\$($cert.Thumbprint)"`,
-        `-FilePath ${ path.join(projectPath, WINDOWS_FOLDER, projectName, projectName) }_TemporaryKey.pfx -Password $pwd`,
+        `-FilePath ${ certificateFileDestPath }_TemporaryKey.pfx -Password $pwd`,
       ].join(' '),
       '$cert.Thumbprint',
     ].join(';');
