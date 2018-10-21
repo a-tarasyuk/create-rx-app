@@ -5,7 +5,7 @@ import uuid from 'uuid';
 import path from 'path';
 import fs from 'fs-extra';
 import os from 'os';
-import { omit } from 'lodash';
+import { omit, merge } from 'lodash';
 import { spawnSync } from 'child_process';
 import { PackageManager } from './package-manager';
 import { Dictionary, SourceType } from './types';
@@ -27,10 +27,11 @@ const { chdir } = process;
 export class Generator {
   private projectPatterns: Dictionary = {};
   private packageJson: Dictionary = {};
+  private runCommand: string;
   private options: GeneratorOptions;
 
   constructor(options: GeneratorOptions) {
-    const { projectName } = options;
+    const { projectName, yarn } = options;
 
     this.projectPatterns = {
       ProjectName: projectName,
@@ -38,6 +39,7 @@ export class Generator {
       projectname: projectName.toLowerCase(),
     };
 
+    this.runCommand = yarn ? 'yarn' : 'npm run';
     this.options = options;
   }
 
@@ -62,6 +64,7 @@ export class Generator {
 
     const pathPatterns = {
       ...this.projectPatterns,
+      '_babelrc': '.babelrc',
       '_eslintrc': '.eslintrc',
       '_gitignore': '.gitignore',
       '_tsconfig.json': 'tsconfig.json',
@@ -141,31 +144,35 @@ export class Generator {
   }
 
   private generatePackageJson(): void {
-    const { projectPath, projectName } = this.options;
-
-    fs.writeFileSync(path.resolve(projectPath, 'package.json'), JSON.stringify({
+    const { projectPath, projectName, yarn } = this.options;
+    const paramsPrefix = yarn ? ' ' : ' -- ';
+    const packageJson = JSON.stringify({
       name: projectName.toLowerCase(), ...omit(this.packageJson, ['devDependencies', 'peerDependencies', 'dependencies']),
-    }, null, 2));
+    }, null, 2);
+
+    fs.writeFileSync(
+      path.resolve(projectPath, 'package.json'),
+      template.render(packageJson, { runCommand: this.runCommand, paramsPrefix }),
+    );
   }
 
   private printInstructions(): void {
-    const { projectName, projectPath, yarn } = this.options;
-    const commandName = yarn ? 'yarn' : 'npm';
+    const { projectName, projectPath } = this.options;
     const xcodeProjectPath = `${ path.resolve(projectPath, IOS_FOLDER, projectName) }.xcodeproj`;
     const windowsProjectPath = `${ path.resolve(projectPath, WINDOWS_FOLDER, projectName) }.sln`;
 
     console.log(chalk.green.bold('%s was successfully created. \n'), projectName);
     console.log(chalk.green.bold('To run your app on Web:'));
     console.log('  cd %s', projectPath);
-    console.log(chalk.white.bold('  %s run start:web \n'), commandName);
+    console.log(chalk.white.bold('  %s start:web \n'), this.runCommand);
 
     console.log(chalk.green.bold('To build Web production version of your app:'));
     console.log('  cd %s', projectPath);
-    console.log(chalk.white.bold('  %s run build:web \n'), commandName);
+    console.log(chalk.white.bold('  %s build:web \n'), this.runCommand);
 
     console.log(chalk.green.bold('To run your app on iOS:'));
     console.log('  cd %s', projectPath);
-    console.log(chalk.white.bold('  %s run start:ios'), commandName);
+    console.log(chalk.white.bold('  %s start:ios'), this.runCommand);
     console.log('  - or -');
     console.log('  open %s project in Xcode', path.relative(projectPath, xcodeProjectPath));
     console.log('  press the Run button \n');
@@ -173,14 +180,14 @@ export class Generator {
     console.log(chalk.green.bold('To run your app on Android:'));
     console.log('  cd %s', projectPath);
     console.log('  Have an Android emulator running (quickest way to get started), or a device connected.');
-    console.log(chalk.white.bold('  %s run start:android'), commandName);
+    console.log(chalk.white.bold('  %s start:android'), this.runCommand);
     console.log('  - or -');
     console.log(chalk.white.bold('  open android/ project in Android Studio'));
     console.log('  press the Run button \n');
 
     console.log(chalk.green.bold('To run your app on Windows:'));
     console.log('  cd %s', projectPath);
-    console.log(chalk.white.bold('  %s run start:windows'), commandName);
+    console.log(chalk.white.bold('  %s start:windows'), this.runCommand);
     console.log('  - or -');
     console.log(chalk.white.bold('  open %s project in Visual Studio'), windowsProjectPath);
     console.log('  press the Run button \n');
@@ -199,10 +206,10 @@ export class Generator {
   private setPackageJson(): void {
     const { templatePath, sourceType } = this.options;
 
-    this.packageJson = {
-      ...JSON.parse(fs.readFileSync(path.join(templatePath, COMMON_FOLDER, '_package.json')) as any),
-      ...JSON.parse(fs.readFileSync(path.join(templatePath, sourceType, '_package.json')) as any),
-    };
+    this.packageJson = merge(
+      JSON.parse(fs.readFileSync(path.join(templatePath, COMMON_FOLDER, '_package.json')) as any),
+      JSON.parse(fs.readFileSync(path.join(templatePath, sourceType, '_package.json')) as any),
+    );
   }
 
   private buildDestPath(absolutePath: string, relativeTo: string, patterns: Dictionary): string {
