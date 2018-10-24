@@ -7,7 +7,9 @@ import { Dictionary } from './types';
 import { Generator } from './generator';
 
 const { exit } = process;
-const isValidProjectName = (projectName: string): boolean => /^[$A-Z_][0-9A-Z_$]*$/i.test(projectName) && projectName !== 'React';
+const isValidProjectName = (projectName: string): boolean => (
+  /^[$A-Z_][0-9A-Z_$]*$/i.test(projectName) && projectName.toLowerCase() !== 'react'
+);
 const yarnExists = (): boolean => spawnSync('yarn', ['-v']).status === 0;
 
 const createRXApp = (projectName: string | undefined, options: Dictionary) => {
