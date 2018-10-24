@@ -14,6 +14,7 @@ export interface GeneratorOptions {
   templatePath: string;
   projectName: string;
   projectPath: string;
+  skipInstall: boolean;
   sourceType: SourceType;
   yarn: boolean;
 }
@@ -21,6 +22,9 @@ export interface GeneratorOptions {
 const WINDOWS_FOLDER = 'windows';
 const COMMON_FOLDER = 'common';
 const IOS_FOLDER = 'ios';
+const NPM_INSTALL = 'npm i';
+const NPM_RUN = 'npm run';
+const YARN = 'yarn';
 
 const { chdir } = process;
 
@@ -39,7 +43,7 @@ export class Generator {
       projectname: projectName.toLowerCase(),
     };
 
-    this.runCommand = yarn ? 'yarn' : 'npm run';
+    this.runCommand = yarn ? YARN : NPM_RUN;
     this.options = options;
   }
 
@@ -64,7 +68,7 @@ export class Generator {
 
     const pathPatterns = {
       ...this.projectPatterns,
-      '_babelrc': '.babelrc',
+      '_babel.config.js': 'babel.config.js',
       '_eslintrc': '.eslintrc',
       '_gitignore': '.gitignore',
       '_tsconfig.json': 'tsconfig.json',
@@ -144,10 +148,10 @@ export class Generator {
   }
 
   private generatePackageJson(): void {
-    const { projectPath, projectName, yarn } = this.options;
+    const { projectPath, projectName, skipInstall, yarn } = this.options;
     const paramsPrefix = yarn ? ' ' : ' -- ';
     const packageJson = JSON.stringify({
-      name: projectName.toLowerCase(), ...omit(this.packageJson, ['devDependencies', 'peerDependencies', 'dependencies']),
+      name: projectName.toLowerCase(), ...omit(this.packageJson, skipInstall ? [] : ['devDependencies', 'dependencies']),
     }, null, 2);
 
     fs.writeFileSync(
@@ -157,11 +161,18 @@ export class Generator {
   }
 
   private printInstructions(): void {
-    const { projectName, projectPath } = this.options;
+    const { projectName, projectPath, skipInstall, yarn } = this.options;
     const xcodeProjectPath = `${ path.resolve(projectPath, IOS_FOLDER, projectName) }.xcodeproj`;
     const windowsProjectPath = `${ path.resolve(projectPath, WINDOWS_FOLDER, projectName) }.sln`;
 
     console.log(chalk.green.bold('%s was successfully created. \n'), projectName);
+
+    if (skipInstall) {
+      console.log(chalk.green.bold('To install dependencies:'));
+      console.log('  cd %s', projectPath);
+      console.log(chalk.white.bold('  %s \n'), yarn ? YARN : NPM_INSTALL);
+    }
+
     console.log(chalk.green.bold('To run your app on Web:'));
     console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  %s start:web \n'), this.runCommand);
@@ -194,13 +205,17 @@ export class Generator {
   }
 
   private installDependencies(): void {
-    const { devDependencies, peerDependencies, dependencies } = this.packageJson;
+    if (this.options.skipInstall) {
+      return;
+    }
+
+    const { devDependencies, dependencies } = this.packageJson;
     const { projectPath, yarn } = this.options;
     const packageManager = new PackageManager(yarn);
 
     chdir(projectPath);
     packageManager.install(devDependencies, 'dev dependencies', true);
-    packageManager.install({ ...dependencies, ...peerDependencies }, 'dependencies');
+    packageManager.install(dependencies, 'dependencies');
   }
 
   private setPackageJson(): void {

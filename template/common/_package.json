@@ -3,11 +3,9 @@
   "main": "index.js",
   "version": "0.0.1",
   "dependencies": {
-    "reactxp": "1.4.0"
-  },
-  "peerDependencies": {
-    "react": "16.6.0-alpha.8af6728",
-    "react-dom": "16.6.0-alpha.8af6728",
+    "reactxp": "1.4.0",
+    "react": "16.6.0",
+    "react-dom": "16.6.0",
     "react-native": "0.57.3",
     "react-native-windows": "0.57.0-rc.0"
   },
@@ -16,12 +14,13 @@
     "@babel/preset-env": "7.1.0",
     "@babel/plugin-proposal-decorators": "7.1.2",
     "babel-loader": "8.0.4",
+    "cross-env": "5.2.0",
     "html-webpack-plugin": "3.2.0",
     "metro-react-native-babel-preset": "0.48.1",
     "rnpm-plugin-windows": "0.2.8",
     "webpack": "4.22.0",
     "webpack-cli": "3.1.2",
-    "webpack-dev-server": "3.1.9",
+    "webpack-dev-server": "3.1.10",
     "webpack-merge": "4.1.4"
   },
   "scripts": {
@@ -29,7 +28,8 @@
     "start:android": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-android",
     "start:windows": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-windows",
     "start:ios": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-ios",
-    "start:web": "webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development",
-    "build:web": "webpack --config=web/webpack/prod.js --progress --colors --mode=production"
+    "start:web": "cross-env platform=web webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development",
+    "start:rn-dev-server": "{{ runCommand }} rn-cli{{ paramsPrefix }}start --reset-cache",
+    "build:web": "cross-env platform=web webpack --config=web/webpack/prod.js --progress --colors --mode=production"
   }
 }

@@ -38,6 +38,7 @@ const createRXApp = (projectName: string | undefined, options: Dictionary) => {
     projectName,
     projectPath: path.join(process.cwd(), projectName),
     sourceType: options.javascript ? 'javascript' : 'typescript',
+    skipInstall: !!options.skipInstall,
     yarn: !!options.yarn,
   }).run();
 };
@@ -47,6 +48,7 @@ const program = new commander.Command('create-rx-app')
   .usage(`${ chalk.green.bold('<project-directory>') } [options]`)
   .option('-J, --javascript', 'generate project in JavaScript')
   .option('-Y, --yarn', 'use yarn as package manager')
+  .option('-S, --skip-install', 'do not automatically install dependencies')
   .allowUnknownOption()
   .parse(process.argv);
 
@@ -55,6 +57,7 @@ if (!program.args.length) {
 }
 
 createRXApp(program.args.shift(), {
+  skipInstall: program.skipInstall,
   javascript: program.javascript,
   yarn: program.yarn,
 });

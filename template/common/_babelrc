@@ -1,9 +1,0 @@
-{
-  "presets": [
-    "@babel/env",
-    "module:metro-react-native-babel-preset"
-  ],
-  "plugins": [
-    ["@babel/proposal-decorators", { "legacy": true }]
-  ]
-}

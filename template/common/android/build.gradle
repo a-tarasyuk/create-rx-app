@@ -19,12 +19,12 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         mavenLocal()
         jcenter()
         maven {
             url "$rootDir/../node_modules/react-native/android"
         }
-        google()
     }
 }
 

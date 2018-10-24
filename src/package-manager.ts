@@ -20,7 +20,7 @@ export class PackageManager {
   private buildDescription(description: string | undefined) {
     return [
       chalk.blue.bold(['[', this.yarn ? 'yarn' : 'npm', ']'].join('')),
-      chalk.white.bold([this.yarn ? 'Adding' : 'Installing', `${ description || ''}...`].join(' ')),
+      chalk.white.bold([this.yarn ? 'adding' : 'installing', `${ description || ''}...`].join(' ')),
     ].join(' ');
   }
 
