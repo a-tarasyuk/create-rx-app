@@ -1,6 +1,6 @@
 {
   "name": "create-rx-app",
-  "version": "0.2.1-beta.3",
+  "version": "0.2.1-rc.0",
   "description": "ReactXP Project Generator",
   "main": "index.js",
   "license": "MIT",
