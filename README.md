@@ -1,6 +1,6 @@
 # Create-RX-App
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app) [![npm version](https://img.shields.io/npm/v/create-rx-app/next.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app) [![David](https://img.shields.io/david/a-tarasyuk/create-rx-app.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app) [![David](https://img.shields.io/david/dev/a-tarasyuk/create-rx-app.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app) [![npm downloads](https://img.shields.io/npm/dm/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app) [![David](https://img.shields.io/david/a-tarasyuk/create-rx-app.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app) [![David](https://img.shields.io/david/dev/a-tarasyuk/create-rx-app.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app) [![npm downloads](https://img.shields.io/npm/dm/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app)
 
 > [ReactXP](https://github.com/Microsoft/reactxp) Project Generator
 
@@ -38,6 +38,10 @@ This will create a directory called **AppName** inside the current working direc
 - `npm run start:android` - runs the Android version of the app and attempts to open your app on a connected Android device or emulator
 - `npm run start:windows` - runs the Windows version of the app
 - `npm run start:rn-dev-server` - runs react native (RN) development server
+
+## System Requirements
+* [Node.JS](https://nodejs.org/)
+* [npm](https://nodejs.org/en/download/package-manager/) or [yarn](https://yarnpkg.com/lang/en/docs/install/)
 
 ## License and Copyright
 
