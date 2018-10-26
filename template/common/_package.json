@@ -6,7 +6,7 @@
     "reactxp": "1.4.0",
     "react": "16.6.0",
     "react-dom": "16.6.0",
-    "react-native": "0.57.3",
+    "react-native": "0.57.4",
     "react-native-windows": "0.57.0-rc.0"
   },
   "devDependencies": {
@@ -16,12 +16,20 @@
     "babel-loader": "8.0.4",
     "cross-env": "5.2.0",
     "html-webpack-plugin": "3.2.0",
-    "metro-react-native-babel-preset": "0.48.1",
+    "metro-react-native-babel-preset": "0.48.2",
     "rnpm-plugin-windows": "0.2.8",
-    "webpack": "4.23.0",
+    "webpack": "4.23.1",
     "webpack-cli": "3.1.2",
     "webpack-dev-server": "3.1.10",
-    "webpack-merge": "4.1.4"
+    "webpack-merge": "4.1.4"{{ ^skipJest }},{{ /skipJest }}
+    {{ ^skipJest }}
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "enzyme": "3.7.0",
+    "enzyme-adapter-react-16": "1.6.0",
+    "enzyme-to-json": "3.3.4"
+    {{ /skipJest }}
   },
   "scripts": {
     "rn-cli": "node node_modules/react-native/local-cli/cli.js",
@@ -30,6 +38,10 @@
     "start:ios": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-ios",
     "start:web": "cross-env platform=web webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development",
     "start:rn-dev-server": "{{ runCommand }} rn-cli{{ paramsPrefix }}start --reset-cache",
-    "build:web": "cross-env platform=web webpack --config=web/webpack/prod.js --progress --colors --mode=production"
+    "build:web": "cross-env platform=web webpack --config=web/webpack/prod.js --progress --colors --mode=production"{{ ^skipJest }},{{ /skipJest }}
+    {{ ^skipJest }}
+    "test": "jest -c jest/jest.config.js",
+    "test:watch": "{{runCommand}} test{{ paramsPrefix }}--watch"
+    {{ /skipJest }}
   }
 }

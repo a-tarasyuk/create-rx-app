@@ -17,10 +17,11 @@ npm install create-rx-app -g
 Usage: create-rx-app <project-directory> [options]
 
 Options:
-  -J, --javascript    generate project in JavaScript
-  -Y, --yarn          use yarn as package manager
-  -S  --skip-install  do not automatically install dependencies
-  -h, --help          output usage information
+  --javascript    generate project in JavaScript
+  --yarn          use yarn as package manager
+  --skip-install  do not automatically install dependencies
+  --skip-jest     do not automatically add Jest configuration
+  -h, --help      output usage information
 ```
 
 ## Creating an App

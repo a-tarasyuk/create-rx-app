@@ -7,67 +7,87 @@ import fs from 'fs-extra';
 import os from 'os';
 import { omit, merge } from 'lodash';
 import { spawnSync } from 'child_process';
-import { PackageManager } from './package-manager';
-import { Dictionary, SourceType } from './types';
 
-export interface GeneratorOptions {
-  templatePath: string;
+import { PackageManager } from './package-manager';
+import { Dictionary, Options } from './types';
+
+type TemplateFolderName = 'javascript' | 'typescript';
+
+interface GeneratorOptions extends Options {
   projectName: string;
   projectPath: string;
-  skipInstall: boolean;
-  sourceType: SourceType;
-  yarn: boolean;
 }
 
+const TYPESCRIPT_FOLDER = 'typescript';
+const JAVASCRIPT_FOLDER = 'javascript';
 const WINDOWS_FOLDER = 'windows';
 const COMMON_FOLDER = 'common';
 const IOS_FOLDER = 'ios';
+const TEMP_PACKAGE_JSON = '_package.json';
+
 const NPM_INSTALL = 'npm i';
 const NPM_RUN = 'npm run';
 const YARN = 'yarn';
 
+const TEMPLATE_PATH = path.resolve(__dirname, '..', 'template');
+const COMMON_TEMPLATE_PATH = path.join(TEMPLATE_PATH, COMMON_FOLDER);
+const WINDOWS_TEMPLATE_PATH = path.join(COMMON_TEMPLATE_PATH, WINDOWS_FOLDER);
+const WINDOWS_TEMPORARY_KEY_PATH = path.join(WINDOWS_TEMPLATE_PATH, 'ProjectName', 'ProjectName_TemporaryKey.pfx');
+const JEST_TEMPLATE_PATH = path.join(COMMON_TEMPLATE_PATH, 'jest');
+
 const { chdir } = process;
 
 export class Generator {
-  private projectPatterns: Dictionary = {};
+  private templateFolderName: TemplateFolderName;
   private packageJson: Dictionary = {};
   private runCommand: string;
   private options: GeneratorOptions;
+  private params: Dictionary = {};
 
   constructor(options: GeneratorOptions) {
-    const { projectName, yarn } = options;
+    const { projectName, javascript, yarn } = options;
 
-    this.projectPatterns = {
+    this.params = {
       ProjectName: projectName,
       displayName: projectName,
       projectname: projectName.toLowerCase(),
     };
 
+    this.templateFolderName = javascript ? JAVASCRIPT_FOLDER : TYPESCRIPT_FOLDER;
     this.runCommand = yarn ? YARN : NPM_RUN;
     this.options = options;
   }
 
   public run(): void {
-    const { projectPath } = this.options;
+    const { projectPath, skipInstall } = this.options;
 
     console.log(chalk.white.bold('Setting up new ReactXP app in %s'), projectPath);
     fs.mkdirSync(projectPath);
-    this.setPackageJson();
 
     this.generateApp();
     this.generateWindowsApp();
+    this.setPackageJson();
     this.generatePackageJson();
-    this.installDependencies();
+
+    if (!skipInstall) {
+      this.installDependencies();
+    }
+
     this.printInstructions();
   }
 
   private generateApp(): void {
-    const { templatePath, sourceType } = this.options;
-    const ignorePaths = ['_package.json', path.join(templatePath, COMMON_FOLDER, WINDOWS_FOLDER)];
-    const paths = [COMMON_FOLDER, sourceType].map(folderName => path.join(templatePath, folderName));
+    const { skipJest, javascript } = this.options;
+    const templatePaths = [COMMON_TEMPLATE_PATH, path.join(TEMPLATE_PATH, this.templateFolderName)];
+    const excludePaths = [WINDOWS_TEMPLATE_PATH, TEMP_PACKAGE_JSON];
 
-    const pathPatterns = {
-      ...this.projectPatterns,
+    if (skipJest) {
+      excludePaths.push(JEST_TEMPLATE_PATH);
+      excludePaths.push(`App.spec.${ javascript ? 'js' : 'tsx' }`);
+    }
+
+    const pathParams = {
+      ...this.params,
       '_babel.config.js': 'babel.config.js',
       '_eslintrc': '.eslintrc',
       '_gitignore': '.gitignore',
@@ -75,32 +95,29 @@ export class Generator {
       '_tslint.json': 'tslint.json',
     };
 
-    paths.forEach(srcPath => (
-      this.walk(srcPath, ignorePaths).forEach((absolutePath: string) => (
-        this.copy(absolutePath, this.buildDestPath(absolutePath, srcPath, pathPatterns), this.projectPatterns)
-      ))
-    ));
+    const contnetParams = { ...this.params, skipJest };
+
+    templatePaths.forEach(srcPath => this.walk(srcPath, excludePaths).forEach(absolutePath => (
+      this.copy(absolutePath, this.buildDestPath(absolutePath, srcPath, pathParams), contnetParams)
+    )));
   }
 
   private generateWindowsApp(): void {
-    const { templatePath } = this.options;
     const currentUser = username.sync();
     const certificateThumbprint = this.buildSelfSignedCertificate(currentUser);
-    const commonTemplatePath = path.join(templatePath, COMMON_FOLDER);
-    const windowsTemplatePath = path.join(commonTemplatePath, WINDOWS_FOLDER);
 
-    const contnetPatterns = {
-      ...this.projectPatterns,
+    const contnetParams = {
+      ...this.params,
       ...certificateThumbprint && { certificateThumbprint },
       currentUser,
       packageGuid: uuid.v4(),
       projectGuid: uuid.v4(),
     };
-    const pathPatterns = { ...this.projectPatterns, _gitignore: '.gitignore' };
-    const ignoreFiles = certificateThumbprint ? ['ProjectName_TemporaryKey.pfx'] : [];
+    const pathParams = { ...this.params, _gitignore: '.gitignore' };
+    const excludePaths = certificateThumbprint ? [WINDOWS_TEMPORARY_KEY_PATH] : [];
 
-    this.walk(windowsTemplatePath, ignoreFiles).forEach((absolutePath: string) => (
-      this.copy(absolutePath, this.buildDestPath(absolutePath, commonTemplatePath, pathPatterns), contnetPatterns)
+    this.walk(WINDOWS_TEMPLATE_PATH, excludePaths).forEach(absolutePath => (
+      this.copy(absolutePath, this.buildDestPath(absolutePath, COMMON_TEMPLATE_PATH, pathParams), contnetParams)
     ));
   }
 
@@ -148,16 +165,12 @@ export class Generator {
   }
 
   private generatePackageJson(): void {
-    const { projectPath, projectName, skipInstall, yarn } = this.options;
-    const paramsPrefix = yarn ? ' ' : ' -- ';
+    const { projectPath, projectName, skipInstall } = this.options;
     const packageJson = JSON.stringify({
       name: projectName.toLowerCase(), ...omit(this.packageJson, skipInstall ? [] : ['devDependencies', 'dependencies']),
     }, null, 2);
 
-    fs.writeFileSync(
-      path.resolve(projectPath, 'package.json'),
-      template.render(packageJson, { runCommand: this.runCommand, paramsPrefix }),
-    );
+    fs.writeFileSync(path.resolve(projectPath, 'package.json'), packageJson);
   }
 
   private printInstructions(): void {
@@ -205,10 +218,6 @@ export class Generator {
   }
 
   private installDependencies(): void {
-    if (this.options.skipInstall) {
-      return;
-    }
-
     const { devDependencies, dependencies } = this.packageJson;
     const { projectPath, yarn } = this.options;
     const packageManager = new PackageManager(yarn);
@@ -219,25 +228,32 @@ export class Generator {
   }
 
   private setPackageJson(): void {
-    const { templatePath, sourceType } = this.options;
-
-    this.packageJson = merge(
-      JSON.parse(fs.readFileSync(path.join(templatePath, COMMON_FOLDER, '_package.json')) as any),
-      JSON.parse(fs.readFileSync(path.join(templatePath, sourceType, '_package.json')) as any),
-    );
+    this.packageJson = merge(this.buildPackageJson(COMMON_FOLDER), this.buildPackageJson(this.templateFolderName));
   }
 
-  private buildDestPath(absolutePath: string, relativeTo: string, patterns: Dictionary): string {
+  private buildPackageJson(srcFolder: string): Dictionary {
+    const { skipJest, yarn } = this.options;
+    const content = fs.readFileSync(path.join(TEMPLATE_PATH, srcFolder, TEMP_PACKAGE_JSON), { encoding: 'utf8' });
+    const params = {
+      paramsPrefix: yarn ? ' ' : ' -- ',
+      runCommand: this.runCommand,
+      skipJest,
+    };
+
+    return JSON.parse(template.render(content, params));
+  }
+
+  private buildDestPath(absolutePath: string, relativeTo: string, params: Dictionary): string {
     let destPath = path.resolve(this.options.projectPath, path.relative(relativeTo, absolutePath));
 
     Object
-      .keys(patterns)
-      .forEach(regexp => destPath = destPath.replace(new RegExp(`\\b${ regexp }`, 'g'), patterns[regexp]));
+      .keys(params)
+      .forEach(regexp => destPath = destPath.replace(new RegExp(`\\b${ regexp }`, 'g'), params[regexp]));
 
     return destPath;
   }
 
-  private copy(srcPath: string, destPath: string, patterns: Dictionary): void {
+  private copy(srcPath: string, destPath: string, params: Dictionary): void {
     if (fs.lstatSync(srcPath).isDirectory()) {
       if (!fs.existsSync(destPath)) {
         fs.mkdirSync(destPath);
@@ -250,7 +266,7 @@ export class Generator {
       if (this.isBinary(srcPath)) {
         fs.copyFileSync(srcPath, destPath);
       } else {
-        const content = template.render(fs.readFileSync(srcPath, 'utf8'), patterns);
+        const content = template.render(fs.readFileSync(srcPath, 'utf8'), params);
         fs.writeFileSync(destPath, content, { encoding: 'utf8', mode: permissions });
       }
     }
@@ -260,16 +276,16 @@ export class Generator {
     return ['.png', '.jpg', '.jar', '.ico', '.pfx'].indexOf(path.extname(srcPath)) >= 0;
   }
 
-  private walk(srcPath: string, ignorePaths: string[] = []): string[] {
-    const isIgnored = (file: string) => ignorePaths.some(p => file.indexOf(p) >= 0);
+  private walk(srcPath: string, excludePaths: string[] = []): string[] {
+    const isExcluded = (file: string) => excludePaths.some(p => file.indexOf(p) >= 0);
 
     if (!fs.lstatSync(srcPath).isDirectory()) {
-      return isIgnored(srcPath) ? [] : [srcPath];
+      return isExcluded(srcPath) ? [] : [srcPath];
     }
 
     return []
       .concat
       .apply([srcPath], fs.readdirSync(srcPath).map(child => this.walk(path.join(srcPath, child))))
-      .filter((absolutePath: string) => !isIgnored(absolutePath));
+      .filter((absolutePath: string) => !isExcluded(absolutePath));
   }
 }

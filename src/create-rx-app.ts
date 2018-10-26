@@ -2,17 +2,13 @@ import commander from 'commander';
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { spawnSync } from 'child_process';
-import { Dictionary } from './types';
+import { isValidProjectName, yarnExists } from './utils';
 import { Generator } from './generator';
+import { Options } from './types';
 
 const { exit } = process;
-const isValidProjectName = (projectName: string): boolean => (
-  /^[$A-Z_][0-9A-Z_$]*$/i.test(projectName) && projectName.toLowerCase() !== 'react'
-);
-const yarnExists = (): boolean => spawnSync('yarn', ['-v']).status === 0;
 
-const createRXApp = (projectName: string | undefined, options: Dictionary) => {
+const createRXApp = (projectName: string | undefined, options: Options) => {
   if (!projectName) {
     console.log(chalk.red('Project name cannot be empty.'));
     return exit();
@@ -35,22 +31,17 @@ const createRXApp = (projectName: string | undefined, options: Dictionary) => {
     return exit();
   }
 
-  new Generator({
-    templatePath: path.resolve(__dirname, '..', 'template'),
-    projectName,
-    projectPath: path.join(process.cwd(), projectName),
-    sourceType: options.javascript ? 'javascript' : 'typescript',
-    skipInstall: !!options.skipInstall,
-    yarn: !!options.yarn,
-  }).run();
+  const projectPath = path.join(process.cwd(), projectName);
+  new Generator({ projectName, projectPath, ...options }).run();
 };
 
 const program = new commander.Command('create-rx-app')
   .arguments('<project-directory>')
   .usage(`${ chalk.green.bold('<project-directory>') } [options]`)
-  .option('-J, --javascript', 'generate project in JavaScript')
-  .option('-Y, --yarn', 'use yarn as package manager')
-  .option('-S, --skip-install', 'do not automatically install dependencies')
+  .option('--javascript', 'generate project in JavaScript')
+  .option('--yarn', 'use yarn as package manager')
+  .option('--skip-install', 'do not automatically install dependencies')
+  .option('--skip-jest', 'do not automatically add Jest configuration')
   .allowUnknownOption()
   .parse(process.argv);
 
@@ -59,7 +50,8 @@ if (!program.args.length) {
 }
 
 createRXApp(program.args.shift(), {
-  skipInstall: program.skipInstall,
-  javascript: program.javascript,
-  yarn: program.yarn,
+  javascript: !!program.javascript,
+  skipInstall: !!program.skipInstall,
+  skipJest: !!program.skipJest,
+  yarn: !!program.yarn,
 });

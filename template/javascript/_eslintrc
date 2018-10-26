@@ -1,7 +1,7 @@
 {
   "parser": "babel-eslint",
-  "plugins": ["react"],
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react"{{ ^skipJest }}, "jest"{{ /skipJest }}],
+  "extends": ["eslint:recommended", "plugin:react/recommended"{{ ^skipJest }}, "plugin:jest/recommended"{{ /skipJest }}],
   "env": {
     "browser": true,
     "node": true,

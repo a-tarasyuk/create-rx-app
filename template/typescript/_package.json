@@ -6,7 +6,11 @@
     "type-check:watch": "{{ runCommand }} type-check{{ paramsPrefix }}-w"
   },
   "devDependencies": {
-    "fork-ts-checker-webpack-plugin": "0.4.12",
+    {{ ^skipJest }}
+    "@types/enzyme": "3.1.14",
+    "@types/jest": "23.3.7",
+    {{ /skipJest }}
+    "fork-ts-checker-webpack-plugin": "0.4.13",
     "tslint": "5.11.0",
     "tslint-react": "3.6.0",
     "typescript": "3.1.3"
