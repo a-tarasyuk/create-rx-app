@@ -9,6 +9,7 @@ import { omit, merge } from 'lodash';
 import { spawnSync } from 'child_process';
 
 import { PackageManager } from './package-manager';
+import { sortKeys } from './utils';
 import { Dictionary, Options } from './types';
 
 type TemplateFolderName = 'javascript' | 'typescript';
@@ -228,7 +229,16 @@ export class Generator {
   }
 
   private setPackageJson(): void {
-    this.packageJson = merge(this.buildPackageJson(COMMON_FOLDER), this.buildPackageJson(this.templateFolderName));
+    const packageJson = merge(
+      this.buildPackageJson(COMMON_FOLDER),
+      this.buildPackageJson(this.templateFolderName),
+    );
+
+    this.packageJson = {
+      ...packageJson,
+      devDependencies: sortKeys(packageJson.devDependencies),
+      dependencies: sortKeys(packageJson.dependencies),
+    };
   }
 
   private buildPackageJson(srcFolder: string): Dictionary {
