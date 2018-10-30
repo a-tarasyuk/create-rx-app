@@ -2,7 +2,7 @@ import commander from 'commander';
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { isValidProjectName, yarnExists } from './utils';
+import { isValidProjectName, getVersion, yarnExists } from './utils';
 import { Generator } from './generator';
 import { Options } from './types';
 
@@ -42,6 +42,7 @@ const program = new commander.Command('create-rx-app')
   .option('--yarn', 'use yarn as package manager')
   .option('--skip-install', 'do not automatically install dependencies')
   .option('--skip-jest', 'do not automatically add Jest configuration')
+  .version(chalk.white.bold(getVersion()), '-v, --version')
   .allowUnknownOption()
   .parse(process.argv);
 

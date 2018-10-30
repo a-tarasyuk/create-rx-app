@@ -21,6 +21,7 @@ Options:
   --yarn          use yarn as package manager
   --skip-install  do not automatically install dependencies
   --skip-jest     do not automatically add Jest configuration
+  -v, --version   output the version number
   -h, --help      output usage information
 ```
 
@@ -31,14 +32,20 @@ To create a new app, run:
 create-rx-app AppName
 ```
 
+or
+
+```shell
+npx create-rx-app AppName
+```
+
 This will create a directory called **AppName** inside the current working directory. Inside **AppName**, this will generate the initial project structure and install all of its dependencies. Once this installation is done, there are some commands you can run in the project directory:
 
-- `npm run start:web` - runs the Web version of the app in the development mode
-- `npm run build:web` - builds the Web version of the app for production to the **dist-web** folder
-- `npm run start:ios` - runs the iOS version of the app and attempts to open in the iOS Simulator if you're on a Mac and have it installed
-- `npm run start:android` - runs the Android version of the app and attempts to open your app on a connected Android device or emulator
-- `npm run start:windows` - runs the Windows version of the app
-- `npm run start:rn-dev-server` - runs react native (RN) development server
+- `npm run start:web` _or_ `yarn start:web` - runs the Web version of the app in the development mode
+- `npm run build:web` _or_ `yarn build:web` - builds the Web version of the app for production to the **dist-web** folder
+- `npm run start:ios` _or_ `yarn start:ios` - runs the iOS version of the app and attempts to open in the iOS Simulator if you're on a Mac and have it installed
+- `npm run start:android` _or_ `yarn start:android` - runs the Android version of the app and attempts to open your app on a connected Android device or emulator
+- `npm run start:windows` _or_ `yarn start:windows` - runs the Windows version of the app
+- `npm run start:rn-dev-server` _or_ `yarn start:rn-dev-server` - runs react native (RN) development server
 
 ## System Requirements
 * [Node.JS](https://nodejs.org/)
