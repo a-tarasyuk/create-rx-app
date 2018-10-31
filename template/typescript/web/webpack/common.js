@@ -11,7 +11,8 @@ const TS_CONFIG_PATH = path.join(ROOT_PATH, 'tsconfig.json');
 const TSLINT_CONFIG_PATH = path.join(ROOT_PATH, 'tslint.json');
 
 const buildConfig = (env, argv) => ({
-  entry: APP_PATH,
+  entry: ROOT_PATH,
+
   output: {
     filename: 'bundle.js',
     path: DIST_PATH,
@@ -32,4 +33,4 @@ const buildConfig = (env, argv) => ({
   ],
 });
 
-module.exports = { buildConfig, APP_PATH, DIST_PATH };
+module.exports = { buildConfig, APP_PATH, DIST_PATH, WEB_PATH };

@@ -8,7 +8,8 @@ const APP_PATH = path.join(ROOT_PATH, 'src');
 const WEB_PATH = path.join(ROOT_PATH, 'web');
 
 const buildConfig = (env, argv) => ({
-  entry: APP_PATH,
+  entry: ROOT_PATH,
+
   output: {
     filename: 'bundle.js',
     path: DIST_PATH,
@@ -27,4 +28,4 @@ const buildConfig = (env, argv) => ({
   ],
 });
 
-module.exports = { buildConfig, APP_PATH, DIST_PATH };
+module.exports = { buildConfig, APP_PATH, DIST_PATH, WEB_PATH };
