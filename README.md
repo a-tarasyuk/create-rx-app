@@ -4,38 +4,26 @@
 
 > [ReactXP](https://github.com/Microsoft/reactxp) Project Generator
 
-## Installation
-
-```shell
-npm install create-rx-app -g
-```
-
-## Usage
-### <abbr title="Command Line Interface">CLI</abbr>
-
-```shell
-Usage: create-rx-app <project-directory> [options]
-
-Options:
-  --javascript    generate project in JavaScript
-  --yarn          use yarn as package manager
-  --skip-install  do not automatically install dependencies
-  --skip-jest     do not automatically add Jest configuration
-  -v, --version   output the version number
-  -h, --help      output usage information
-```
-
 ## Creating an App
-To create a new app, run:
 
-```shell
-create-rx-app AppName
+### npx _(npm 5.2+)_
+
+```sh
+npx create-rx-app AppName
 ```
 
-or
+### npm init _(npm 6.0+)_
 
-```shell
-npx create-rx-app AppName
+```sh
+npm init rx-app AppName
+```
+
+### npm -g
+
+```sh
+npm install create-rx-app -g
+
+create-rx-app AppName
 ```
 
 This will create a directory called **AppName** inside the current working directory. Inside **AppName**, this will generate the initial project structure and install all of its dependencies. Once this installation is done, there are some commands you can run in the project directory:
@@ -50,6 +38,18 @@ This will create a directory called **AppName** inside the current working direc
 ## System Requirements
 * [Node.JS](https://nodejs.org/)
 * [npm](https://nodejs.org/en/download/package-manager/) or [yarn](https://yarnpkg.com/lang/en/docs/install/)
+
+## CLI options
+
+```shell
+--javascript    generate project in JavaScript
+--yarn          use yarn as package manager
+--skip-install  do not automatically install dependencies
+--skip-jest     do not automatically add Jest configuration
+-v, --version   output the version number
+-h, --help      output usage information
+```
+
 
 ## License and Copyright
 

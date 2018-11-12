@@ -4,11 +4,11 @@
   },
   "devDependencies": {
     "babel-eslint": "10.0.1",
-    "eslint": "5.8.0",
+    "eslint": "5.9.0",
     "eslint-loader": "2.1.1",
     "eslint-plugin-react": "7.11.1"{{ ^skipJest }},{{ /skipJest }}
     {{ ^skipJest }}
-    "eslint-plugin-jest": "21.26.2"
+    "eslint-plugin-jest": "22.0.0"
     {{ /skipJest }}
   }
 }
