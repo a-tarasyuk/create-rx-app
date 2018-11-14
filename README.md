@@ -6,16 +6,22 @@
 
 ## Creating an App
 
-### npx _(npm 5.2+)_
+### npx _(npm >= **5.2**)_
 
 ```sh
 npx create-rx-app AppName
 ```
 
-### npm init _(npm 6.0+)_
+### npm init _(npm >= **6.0**)_
 
 ```sh
 npm init rx-app AppName
+```
+
+### yarn create _(yarn >= **0.25**)_
+
+```sh
+yarn create rx-app AppName
 ```
 
 ### npm -g
@@ -35,20 +41,20 @@ This will create a directory called **AppName** inside the current working direc
 - `npm run start:windows` _or_ `yarn start:windows` - runs the Windows version of the app
 - `npm run start:rn-dev-server` _or_ `yarn start:rn-dev-server` - runs react native (RN) development server
 
-## System Requirements
-* [Node.JS](https://nodejs.org/)
-* [npm](https://nodejs.org/en/download/package-manager/) or [yarn](https://yarnpkg.com/lang/en/docs/install/)
-
 ## CLI options
 
 ```shell
 --javascript    generate project in JavaScript
---yarn          use yarn as package manager
---skip-install  do not automatically install dependencies
---skip-jest     do not automatically add Jest configuration
+--skip-install  don't automatically install dependencies
+--skip-jest     don't automatically add Jest configuration
+--skip-yarn     don't use Yarn for managing dependencies
 -v, --version   output the version number
 -h, --help      output usage information
 ```
+
+## System Requirements
+* [Node.JS](https://nodejs.org/)
+* [npm](https://nodejs.org/en/download/package-manager/) or [yarn](https://yarnpkg.com/lang/en/docs/install/)
 
 
 ## License and Copyright
