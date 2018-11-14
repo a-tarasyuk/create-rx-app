@@ -43,7 +43,7 @@ This will create a directory called **AppName** inside the current working direc
 
 ## CLI options
 
-```shell
+```
 --javascript    generate project in JavaScript
 --skip-install  don't automatically install dependencies
 --skip-jest     don't automatically add Jest configuration
