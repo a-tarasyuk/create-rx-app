@@ -5,6 +5,7 @@
 > [ReactXP](https://github.com/Microsoft/reactxp) Project Generator
 
 ## Creating an App
+> To create a new app, you may choose one of the following methods:
 
 ### npx _(npm >= **5.2**)_
 
