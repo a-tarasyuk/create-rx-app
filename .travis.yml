@@ -7,9 +7,6 @@ dist: trusty
 
 sudo: false
 
-addons:
-  chrome: stable
-
 install:
   - node --version
   - npm --version
