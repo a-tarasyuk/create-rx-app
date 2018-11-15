@@ -1,6 +1,6 @@
 # Create-RX-App
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app) [![David](https://img.shields.io/david/a-tarasyuk/create-rx-app.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app) [![David](https://img.shields.io/david/dev/a-tarasyuk/create-rx-app.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app) [![npm downloads](https://img.shields.io/npm/dm/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app) [![npm downloads](https://img.shields.io/npm/dm/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app)
 
 > [ReactXP](https://github.com/Microsoft/reactxp) Project Generator
 
