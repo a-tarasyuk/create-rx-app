@@ -1,0 +1,24 @@
+language: node_js
+
+node_js:
+  - "node"
+
+dist: trusty
+
+sudo: false
+
+addons:
+  chrome: stable
+
+install:
+  - node --version
+  - npm --version
+  - npm i
+
+script:
+  - npm run build
+  - npm run test
+
+cache:
+  directories:
+    - node_modules
