@@ -2,6 +2,8 @@ import chalk from 'chalk';
 import { execSync } from 'child_process';
 import { Dictionary } from './types';
 
+const { exit } = process;
+
 export class PackageManager {
   private yarn: boolean;
 
@@ -14,7 +16,13 @@ export class PackageManager {
 
     console.log(this.buildDescription(description));
     console.log(chalk.grey.bold('%s'), command);
-    execSync(command, { stdio: 'inherit' });
+
+    try {
+      execSync(command, { stdio: 'inherit' });
+    } catch {
+      console.log(chalk.red.bold('Dependencies were not installed, please try to create a project again.'));
+      exit(1);
+    }
   }
 
   private buildDescription(description: string | undefined) {

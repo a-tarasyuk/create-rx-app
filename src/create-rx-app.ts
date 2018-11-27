@@ -2,12 +2,19 @@ import commander from 'commander';
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
+import Enquirer from 'enquirer';
 import { isValidProjectName, getVersion, yarnExists } from './utils';
 import { Generator } from './generator';
 import { Options } from './types';
 
 const { exit } = process;
-const createRXApp = (projectName: string | undefined, options: Options) => {
+
+const cancel = (): void => {
+  console.log(chalk.gray.bold('\nProject initialization was canceled.'));
+  exit();
+};
+
+const createRXApp = async (projectName: string | undefined, options: Options) => {
   if (!projectName) {
     console.log(chalk.red('Project name cannot be empty.'));
     return exit();
@@ -19,12 +26,27 @@ const createRXApp = (projectName: string | undefined, options: Options) => {
   }
 
   if (fs.existsSync(projectName)) {
-    console.log(chalk.red(`Directory ${ chalk.red.bold(projectName) } is already exists.`));
-    return exit();
+    try {
+      const { useExistingDir } = await Enquirer.prompt<{ useExistingDir: boolean }>({
+        message: chalk.yellow.bold(`Directory ${ chalk.red.bold(projectName) } is already exists. Continue?`),
+        initial: false,
+        name: 'useExistingDir',
+        type: 'confirm',
+      });
+
+      if (!useExistingDir) {
+        return cancel();
+      }
+    } catch {
+      return cancel();
+    }
   }
 
-  const projectPath = path.join(process.cwd(), projectName);
-  new Generator({ projectName, projectPath, ...options }).run();
+  new Generator({
+    projectName,
+    projectPath: path.join(process.cwd(), projectName),
+    ...options,
+  }).run();
 };
 
 const program = new commander.Command('create-rx-app')

@@ -63,10 +63,10 @@ export class Generator {
     const { projectPath, skipInstall } = this.options;
 
     console.log(chalk.white.bold('Setting up new ReactXP app in %s'), projectPath);
-    fs.mkdirSync(projectPath);
+    if (!fs.existsSync(projectPath)) {
+      fs.mkdirSync(projectPath);
+    }
 
-    this.generateApp();
-    this.generateWindowsApp();
     this.setPackageJson();
     this.generatePackageJson();
 
@@ -74,6 +74,8 @@ export class Generator {
       this.installDependencies();
     }
 
+    this.generateApp();
+    this.generateWindowsApp();
     this.printInstructions();
   }
 
@@ -271,11 +273,10 @@ export class Generator {
 
       return;
     } else {
-      const permissions = fs.statSync(srcPath).mode;
-
       if (this.isBinary(srcPath)) {
         fs.copyFileSync(srcPath, destPath);
       } else {
+        const permissions = fs.statSync(srcPath).mode;
         const content = template.render(fs.readFileSync(srcPath, 'utf8'), params);
         fs.writeFileSync(destPath, content, { encoding: 'utf8', mode: permissions });
       }
