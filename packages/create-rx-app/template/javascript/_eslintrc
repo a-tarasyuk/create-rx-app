@@ -1,0 +1,26 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["react"{{ ^skipJest }}, "jest"{{ /skipJest }}],
+  "extends": ["eslint:recommended", "plugin:react/recommended"{{ ^skipJest }}, "plugin:jest/recommended"{{ /skipJest }}],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "react/jsx-curly-brace-presence": [2, { "props": "always" }],
+    "max-len": ["error", 140]
+  },
+  "globals": {
+    "__DEV__": true
+  },
+  "settings": {
+    "react": { "version": "latest" }
+  },
+}
