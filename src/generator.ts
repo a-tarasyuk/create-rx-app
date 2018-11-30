@@ -5,7 +5,7 @@ import uuid from 'uuid';
 import path from 'path';
 import fs from 'fs-extra';
 import os from 'os';
-import { omit, merge } from 'lodash';
+import { flatten, omit, merge } from 'lodash';
 import { spawnSync } from 'child_process';
 
 import { PackageManager } from './package-manager';
@@ -294,9 +294,8 @@ export class Generator {
       return isExcluded(srcPath) ? [] : [srcPath];
     }
 
-    return []
-      .concat
-      .apply([srcPath], fs.readdirSync(srcPath).map(child => this.walk(path.join(srcPath, child))))
-      .filter((absolutePath: string) => !isExcluded(absolutePath));
+    return [
+      srcPath, ...flatten(fs.readdirSync(srcPath).map(child => this.walk(path.join(srcPath, child)))),
+    ].filter(absolutePath => !isExcluded(absolutePath));
   }
 }
