@@ -31,10 +31,10 @@
   "dependencies": {
     "@types/fs-extra": "5.0.4",
     "@types/jest": "23.3.10",
-    "@types/lodash": "4.14.118",
+    "@types/lodash": "4.14.119",
     "@types/minimist": "1.2.0",
     "@types/mustache": "0.8.32",
-    "@types/node": "10.12.10",
+    "@types/node": "10.12.14",
     "@types/username": "3.0.0",
     "@types/uuid": "3.4.4",
     "chalk": "2.4.1",
@@ -47,7 +47,7 @@
     "mustache": "3.0.1",
     "ts-jest": "23.10.5",
     "tslint": "5.11.0",
-    "typescript": "3.2.1",
+    "typescript": "3.2.2",
     "username": "4.0.0",
     "uuid": "3.3.2"
   },
