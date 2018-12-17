@@ -10,11 +10,6 @@ const WEB_PATH = path.join(ROOT_PATH, 'web');
 const buildConfig = (env, argv) => ({
   entry: ROOT_PATH,
 
-  output: {
-    filename: 'bundle.js',
-    path: DIST_PATH,
-  },
-
   module: {
     rules: [
       { test: /\.jsx?$/, loader: 'eslint-loader', include: APP_PATH, enforce: 'pre' },
@@ -28,4 +23,9 @@ const buildConfig = (env, argv) => ({
   ],
 });
 
-module.exports = { buildConfig, APP_PATH, DIST_PATH, WEB_PATH };
+module.exports = {
+  buildConfig,
+  APP_PATH,
+  DIST_PATH,
+  WEB_PATH,
+};
