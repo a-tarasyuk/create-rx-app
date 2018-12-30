@@ -284,7 +284,7 @@ export class Generator {
   }
 
   private isBinary(srcPath: string): boolean {
-    return ['.png', '.jpg', '.jar', '.ico', '.pfx'].indexOf(path.extname(srcPath)) >= 0;
+    return ['.png', '.jpg', '.jar', '.ico', '.pfx', '.keystore'].indexOf(path.extname(srcPath)) >= 0;
   }
 
   private walk(srcPath: string, excludePaths: string[] = []): string[] {
