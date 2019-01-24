@@ -8,12 +8,12 @@
   "devDependencies": {
     {{ ^skipJest }}
     "@types/enzyme": "3.1.15",
-    "@types/jest": "23.3.12",
+    "@types/jest": "23.3.13",
     {{ /skipJest }}
-    "@types/react": "16.4.18",
+    "@types/react": "16.7.20",
     "fork-ts-checker-webpack-plugin": "0.5.2",
     "tslint": "5.12.1",
     "tslint-react": "3.6.0",
-    "typescript": "3.2.2"
+    "typescript": "3.2.4"
   }
 }
