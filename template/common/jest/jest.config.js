@@ -16,9 +16,5 @@ module.exports = {
     '<rootDir>/jest/enzyme.config.js',
   ],
 
-  transform: {
-    '^.+\\.(t|j)sx?$': 'babel-jest',
-  },
-
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.((t|j)sx?)$',
 };

@@ -31,11 +31,9 @@
     "webpack-dev-server": "3.1.14",
     "webpack-merge": "4.2.1"{{ ^skipJest }},{{ /skipJest }}
     {{ ^skipJest }}
-    "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "23.6.0",
-    "jest": "23.6.0",
+    "jest": "24.0.0",
     "enzyme": "3.8.0",
-    "enzyme-adapter-react-16": "1.7.1",
+    "enzyme-adapter-react-16": "1.8.0",
     "enzyme-to-json": "3.3.5"
     {{ /skipJest }}
   },
