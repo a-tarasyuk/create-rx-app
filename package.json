@@ -29,9 +29,9 @@
     "test": "jest -c jest.config.js"
   },
   "dependencies": {
-    "@types/fs-extra": "5.0.4",
-    "@types/jest": "24.0.0",
-    "@types/lodash": "4.14.120",
+    "@types/fs-extra": "5.0.5",
+    "@types/jest": "24.0.6",
+    "@types/lodash": "4.14.121",
     "@types/minimist": "1.2.0",
     "@types/mustache": "0.8.32",
     "@types/node": "10.12.21",
@@ -45,9 +45,9 @@
     "jest": "24.1.0",
     "lodash": "4.17.11",
     "mustache": "3.0.1",
-    "ts-jest": "23.10.5",
+    "ts-jest": "24.0.0",
     "tslint": "5.12.1",
-    "typescript": "3.3.1",
+    "typescript": "3.3.3",
     "username": "4.1.0",
     "uuid": "3.3.2"
   },
