@@ -29,6 +29,7 @@ describe('create-rx-app.spec', () => {
     expect(fs.existsSync(path.join(APP_PATH, 'src'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'web'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'windows'))).toBeTruthy();
+    expect(fs.existsSync(path.join(APP_PATH, '.eslintrc'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'babel.config.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'index.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'package.json'))).toBeTruthy();
@@ -40,7 +41,6 @@ describe('create-rx-app.spec', () => {
     expect(status).toEqual(0);
     expect(fs.existsSync(APP_PATH)).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'tsconfig.json'))).toBeTruthy();
-    expect(fs.existsSync(path.join(APP_PATH, 'tslint.json'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.tsx'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.tsx'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'config.ts'))).toBeTruthy();
@@ -52,7 +52,6 @@ describe('create-rx-app.spec', () => {
 
     expect(status).toEqual(0);
     expect(fs.existsSync(APP_PATH)).toBeTruthy();
-    expect(fs.existsSync(path.join(APP_PATH, '.eslintrc'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'config.js'))).toBeTruthy();
