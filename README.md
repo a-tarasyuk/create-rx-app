@@ -2,7 +2,7 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/a-tarasyuk/create-rx-app/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app) [![Build Status](https://img.shields.io/travis/a-tarasyuk/create-rx-app/master.svg?style=flat-square)](https://travis-ci.org/a-tarasyuk/create-rx-app) [![npm downloads](https://img.shields.io/npm/dm/create-rx-app.svg?style=flat-square)](https://www.npmjs.com/package/create-rx-app)
 
-> [ReactXP](https://github.com/Microsoft/reactxp) Project Generator
+> [ReactXP](https://github.com/Microsoft/reactxp) project generator for building your next awesome cross-platform (Web, Android, iOS, Windows) app
 
 ## Creating an App
 > To create a new app, you may choose one of the following methods:
