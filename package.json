@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@types/fs-extra": "5.0.5",
-    "@types/jest": "24.0.6",
+    "@types/jest": "24.0.9",
     "@types/lodash": "4.14.121",
     "@types/minimist": "1.2.0",
     "@types/mustache": "0.8.32",
@@ -46,7 +46,7 @@
     "lodash": "4.17.11",
     "mustache": "3.0.1",
     "ts-jest": "24.0.0",
-    "tslint": "5.12.1",
+    "tslint": "5.13.1",
     "typescript": "3.3.3",
     "username": "4.1.0",
     "uuid": "3.3.2"
