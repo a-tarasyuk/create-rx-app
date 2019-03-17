@@ -31,6 +31,7 @@ describe('create-rx-app.spec', () => {
     expect(fs.existsSync(path.join(APP_PATH, 'windows'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, '.eslintrc'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'babel.config.js'))).toBeTruthy();
+    expect(fs.existsSync(path.join(APP_PATH, 'metro.config.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'index.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'package.json'))).toBeTruthy();
   });
