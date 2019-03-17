@@ -91,6 +91,7 @@ export class Generator {
 
     const pathParams = {
       ...this.params,
+      '_metro.config.js': 'metro.config.js',
       '_babel.config.js': 'babel.config.js',
       '_eslintrc': '.eslintrc',
       '_gitignore': '.gitignore',
