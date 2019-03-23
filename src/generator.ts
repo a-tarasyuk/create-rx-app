@@ -45,7 +45,7 @@ export class Generator {
   private options: GeneratorOptions;
   private params: Dictionary = {};
 
-  constructor(options: GeneratorOptions) {
+  public constructor(options: GeneratorOptions) {
     const { projectName, javascript, yarn } = options;
 
     this.params = {

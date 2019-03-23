@@ -7,7 +7,7 @@ const { exit } = process;
 export class PackageManager {
   private yarn: boolean;
 
-  constructor(yarn: boolean) {
+  public constructor(yarn: boolean) {
     this.yarn = yarn;
   }
 

@@ -1,0 +1,28 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "jest"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:jest/recommended"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/indent": ["error", 2],
+    "no-console": "off",
+    "max-len": ["error", 140],
+    "indent": "off"
+  },
+  "globals": {},
+  "settings": {}
+}
