@@ -7,12 +7,12 @@
   "devDependencies": {
     {{ ^skipJest }}
     "@types/jest": "24.0.11",
-    "@types/enzyme": "3.9.0",
+    "@types/enzyme": "3.9.1",
     {{ /skipJest }}
-    "@typescript-eslint/parser": "1.4.2",
-    "@typescript-eslint/eslint-plugin": "1.4.2",
+    "@typescript-eslint/parser": "1.5.0",
+    "@typescript-eslint/eslint-plugin": "1.5.0",
     "@types/react": "16.8.8",
     "fork-ts-checker-webpack-plugin": "1.0.0",
-    "typescript": "3.3.3"
+    "typescript": "3.3.4000"
   }
 }
