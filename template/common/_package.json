@@ -3,7 +3,7 @@
   "main": "index.js",
   "version": "0.0.1",
   "scripts": {
-    "rn-cli": "node node_modules/react-native/local-cli/cli.js",
+    "rn-cli": "node scripts/react-native.js",
     "start:android": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-android",
     "start:windows": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-windows",
     "start:ios": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-ios",
@@ -21,6 +21,7 @@
     "@babel/core": "7.4.3",
     "@babel/preset-env": "7.4.3",
     "@babel/plugin-proposal-decorators": "7.4.0",
+    "@react-native-community/cli": "2.0.0-alpha.6",
     "babel-loader": "8.0.5",
     "cross-env": "5.2.0",
     "compression-webpack-plugin": "2.0.0",
