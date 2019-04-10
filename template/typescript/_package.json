@@ -9,10 +9,10 @@
     "@types/jest": "24.0.11",
     "@types/enzyme": "3.9.1",
     {{ /skipJest }}
-    "@typescript-eslint/parser": "1.5.0",
-    "@typescript-eslint/eslint-plugin": "1.5.0",
+    "@typescript-eslint/parser": "1.6.0",
+    "@typescript-eslint/eslint-plugin": "1.6.0",
     "@types/react": "16.7.21",
     "fork-ts-checker-webpack-plugin": "1.0.1",
-    "typescript": "3.4.1"
+    "typescript": "3.4.3"
   }
 }

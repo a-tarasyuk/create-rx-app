@@ -18,8 +18,8 @@
     {{ /skipJest }}
   },
   "devDependencies": {
-    "@babel/core": "7.4.0",
-    "@babel/preset-env": "7.4.2",
+    "@babel/core": "7.4.3",
+    "@babel/preset-env": "7.4.3",
     "@babel/plugin-proposal-decorators": "7.4.0",
     "babel-loader": "8.0.5",
     "cross-env": "5.2.0",
@@ -32,12 +32,12 @@
     "rnpm-plugin-windows": "0.2.8",
     "webpack": "4.29.6",
     "webpack-cli": "3.3.0",
-    "webpack-dev-server": "3.2.1",
+    "webpack-dev-server": "3.3.1",
     "webpack-merge": "4.2.1"{{ ^skipJest }},{{ /skipJest }}
     {{ ^skipJest }}
-    "jest": "24.5.0",
+    "jest": "24.7.1",
     "enzyme": "3.9.0",
-    "enzyme-adapter-react-16": "1.11.2",
+    "enzyme-adapter-react-16": "1.12.1",
     "enzyme-to-json": "3.3.5",
     "eslint-plugin-jest": "22.4.1"
     {{ /skipJest }}
