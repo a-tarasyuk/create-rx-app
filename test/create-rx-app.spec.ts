@@ -27,6 +27,7 @@ describe('create-rx-app.spec', () => {
     expect(fs.existsSync(path.join(APP_PATH, 'ios'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'jest'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src'))).toBeTruthy();
+    expect(fs.existsSync(path.join(APP_PATH, 'scripts'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'web'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'windows'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, '.eslintrc'))).toBeTruthy();

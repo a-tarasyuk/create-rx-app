@@ -45,7 +45,7 @@ export class Generator {
   private options: GeneratorOptions;
   private params: Dictionary = {};
 
-  constructor(options: GeneratorOptions) {
+  public constructor(options: GeneratorOptions) {
     const { projectName, javascript, yarn } = options;
 
     this.params = {
@@ -125,7 +125,7 @@ export class Generator {
     ));
   }
 
-  private buildSelfSignedCertificate(currentUser: string): string {
+  private buildSelfSignedCertificate(currentUser: string | undefined): string {
     const { projectPath, projectName } = this.options;
 
     if (os.platform() !== 'win32') {
