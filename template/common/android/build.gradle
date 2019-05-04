@@ -27,8 +27,3 @@ allprojects {
         }
     }
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.7'
-    distributionUrl = distributionUrl.replace("bin", "all")
-}

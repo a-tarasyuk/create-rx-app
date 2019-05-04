@@ -124,7 +124,7 @@ export class Generator {
     ));
   }
 
-  private buildSelfSignedCertificate(currentUser: string): string {
+  private buildSelfSignedCertificate(currentUser: string | undefined): string {
     const { projectPath, projectName } = this.options;
 
     if (os.platform() !== 'win32') {
