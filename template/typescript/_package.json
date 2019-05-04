@@ -11,7 +11,7 @@
     {{ /skipJest }}
     "@typescript-eslint/parser": "1.7.0",
     "@typescript-eslint/eslint-plugin": "1.7.0",
-    "@types/react": "16.8.8",
+    "@types/react": "16.8.16",
     "fork-ts-checker-webpack-plugin": "1.3.0",
     "typescript": "3.4.5"
   }
