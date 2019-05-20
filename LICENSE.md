@@ -1,6 +1,6 @@
 The MIT License
 
-Copyright (c) 2018 Alexander Tatasyuk
+Copyright (c) 2018 Alexander Tarasyuk
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
