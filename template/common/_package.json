@@ -21,7 +21,7 @@
     "@babel/core": "7.4.5",
     "@babel/preset-env": "7.4.5",
     "@babel/plugin-proposal-decorators": "7.4.4",
-    "@react-native-community/cli": "1.9.5",
+    "@react-native-community/cli": "1.9.7",
     "babel-loader": "8.0.6",
     "cross-env": "5.2.0",
     "compression-webpack-plugin": "2.0.0",
@@ -33,12 +33,12 @@
     "rnpm-plugin-windows": "0.2.9",
     "webpack": "4.32.2",
     "webpack-cli": "3.3.2",
-    "webpack-dev-server": "3.4.1",
+    "webpack-dev-server": "3.5.1",
     "webpack-merge": "4.2.1"{{ ^skipJest }},{{ /skipJest }}
     {{ ^skipJest }}
     "jest": "24.8.0",
     "enzyme": "3.9.0",
-    "enzyme-adapter-react-16": "1.13.1",
+    "enzyme-adapter-react-16": "1.13.2",
     "enzyme-to-json": "3.3.5",
     "eslint-plugin-jest": "22.6.4"
     {{ /skipJest }}
