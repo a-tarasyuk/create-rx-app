@@ -34,6 +34,7 @@ describe('create-rx-app.spec', () => {
     expect(fs.existsSync(path.join(APP_PATH, 'babel.config.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'index.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'package.json'))).toBeTruthy();
+    expect(fs.existsSync(path.join(APP_PATH, 'README.md'))).toBeTruthy();
   });
 
   it('checks TypeScript project structure', () => {
