@@ -9,7 +9,7 @@ import { flatten, omit, merge } from 'lodash';
 import { spawnSync } from 'child_process';
 
 import { PackageManager } from './package-manager';
-import { sortKeys } from './utils';
+import { getVersion, sortKeys } from './utils';
 import { Dictionary, Options } from './types';
 
 type TemplateFolderName = 'javascript' | 'typescript';
@@ -97,9 +97,15 @@ export class Generator {
       '_gitignore': '.gitignore',
       '_tsconfig.json': 'tsconfig.json',
       '_tslint.json': 'tslint.json',
+      '_README.md': 'README.md',
     };
 
-    const contnetParams = { ...this.params, skipJest };
+    const contnetParams = {
+      ...this.params,
+      runCommand: this.runCommand,
+      version: getVersion(),
+      skipJest,
+    };
 
     templatePaths.forEach(srcPath => this.walk(srcPath, excludePaths).forEach(absolutePath => (
       this.copy(absolutePath, this.buildDestPath(absolutePath, srcPath, pathParams), contnetParams)
