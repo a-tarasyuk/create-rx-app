@@ -196,15 +196,15 @@ export class Generator {
       console.log(chalk.white.bold('  %s \n'), yarn ? YARN : NPM_INSTALL);
     }
 
-    console.log(chalk.green.bold('To run your app on Web:'));
+    console.log(chalk.yellow.bold('To run your app on Web:'));
     console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  %s start:web \n'), this.runCommand);
 
-    console.log(chalk.green.bold('To build Web production version of your app:'));
+    console.log(chalk.yellow.bold('To build Web production version of your app:'));
     console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  %s build:web \n'), this.runCommand);
 
-    console.log(chalk.green.bold('To run your app on iOS:'));
+    console.log(chalk.cyan.bold('To run your app on iOS:'));
     console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  %s start:ios'), this.runCommand);
     console.log('  - or -');
@@ -219,7 +219,7 @@ export class Generator {
     console.log(chalk.white.bold('  open android/ project in Android Studio'));
     console.log('  press the Run button \n');
 
-    console.log(chalk.green.bold('To run your app on Windows:'));
+    console.log(chalk.blue.bold('To run your app on Windows:'));
     console.log('  cd %s', projectPath);
     console.log(chalk.white.bold('  %s start:windows'), this.runCommand);
     console.log('  - or -');

@@ -34,9 +34,8 @@ const _styles = {
   }),
 
   link: RX.Styles.createLinkStyle({
-    textDecorationLine: 'underline',
-    paddingRight: 5,
-    paddingLeft: 5,
+    marginRight: 5,
+    marginLeft: 5,
     color: '#0070E0',
   }),
 };
