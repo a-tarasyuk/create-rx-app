@@ -31,7 +31,7 @@
     "html-webpack-plugin": "3.2.0",
     "metro-react-native-babel-preset": "0.55.0",
     "rnpm-plugin-windows": "0.2.11",
-    "webpack": "4.38.0",
+    "webpack": "4.39.1",
     "webpack-cli": "3.3.6",
     "webpack-dev-server": "3.7.2",
     "webpack-merge": "4.2.1"{{ ^skipJest }},{{ /skipJest }}
@@ -39,8 +39,8 @@
     "jest": "24.8.0",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
-    "enzyme-to-json": "3.3.5",
-    "eslint-plugin-jest": "22.14.0"
+    "enzyme-to-json": "3.4.0",
+    "eslint-plugin-jest": "22.14.1"
     {{ /skipJest }}
   },
   "dependencies": {
