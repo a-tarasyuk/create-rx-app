@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "lint": "eslint --config .eslintrc --ext .js src"
+  },
   "devDependencies": {
     "babel-eslint": "10.0.1"
   }

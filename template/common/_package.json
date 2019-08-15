@@ -9,8 +9,7 @@
     "start:ios": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-ios",
     "start:web": "cross-env platform=web webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development",
     "start:rn-dev-server": "{{ runCommand }} rn-cli{{ paramsPrefix }}start --reset-cache",
-    "build:web": "cross-env platform=web webpack --config=web/webpack/prod.js --progress --colors --mode=production",
-    "lint": "eslint -c .eslintrc src/**/*"{{ ^skipJest }},{{ /skipJest }}
+    "build:web": "cross-env platform=web webpack --config=web/webpack/prod.js --progress --colors --mode=production"{{ ^skipJest }},{{ /skipJest }}
     {{ ^skipJest }}
     "test": "jest -c jest/jest.config.js",
     "test:watch": "{{ runCommand }} test{{ paramsPrefix }}--watch",
@@ -29,18 +28,18 @@
     "eslint-loader": "2.2.1",
     "eslint-plugin-react": "7.14.3",
     "html-webpack-plugin": "3.2.0",
-    "metro-react-native-babel-preset": "0.55.0",
+    "metro-react-native-babel-preset": "0.56.0",
     "rnpm-plugin-windows": "0.2.11",
-    "webpack": "4.39.1",
+    "webpack": "4.39.2",
     "webpack-cli": "3.3.6",
-    "webpack-dev-server": "3.7.2",
+    "webpack-dev-server": "3.8.0",
     "webpack-merge": "4.2.1"{{ ^skipJest }},{{ /skipJest }}
     {{ ^skipJest }}
     "jest": "24.8.0",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
     "enzyme-to-json": "3.4.0",
-    "eslint-plugin-jest": "22.14.1"
+    "eslint-plugin-jest": "22.15.1"
     {{ /skipJest }}
   },
   "dependencies": {
@@ -48,6 +47,6 @@
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-native": "0.59.10",
-    "react-native-windows": "0.59.0-rc.1"
+    "react-native-windows": "0.59.0-rc.3"
   }
 }
