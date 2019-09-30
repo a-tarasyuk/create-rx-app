@@ -17,35 +17,35 @@
     {{ /skipJest }}
   },
   "devDependencies": {
-    "@babel/core": "7.5.5",
-    "@babel/preset-env": "7.5.5",
-    "@babel/plugin-proposal-decorators": "7.4.4",
-    "@react-native-community/cli": "1.10.0",
+    "@babel/core": "7.6.2",
+    "@babel/preset-env": "7.6.2",
+    "@babel/plugin-proposal-decorators": "7.6.0",
+    "@react-native-community/cli": "2.9.0",
     "babel-loader": "8.0.6",
-    "cross-env": "5.2.1",
+    "cross-env": "6.0.3",
     "compression-webpack-plugin": "3.0.0",
-    "eslint": "6.3.0",
-    "eslint-loader": "3.0.0",
-    "eslint-plugin-react": "7.14.3",
+    "eslint": "6.5.1",
+    "eslint-loader": "3.0.2",
+    "eslint-plugin-react": "7.16.0",
     "html-webpack-plugin": "3.2.0",
     "metro-react-native-babel-preset": "0.56.0",
-    "rnpm-plugin-windows": "0.2.11",
-    "webpack": "4.39.3",
-    "webpack-cli": "3.3.7",
-    "webpack-dev-server": "3.8.0",
+    "rnpm-plugin-windows": "0.3.5",
+    "webpack": "4.41.0",
+    "webpack-cli": "3.3.9",
+    "webpack-dev-server": "3.8.2",
     "webpack-merge": "4.2.2"{{ ^skipJest }},{{ /skipJest }}
     {{ ^skipJest }}
     "jest": "24.9.0",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
-    "enzyme-to-json": "3.4.0",
-    "eslint-plugin-jest": "22.16.0"
+    "enzyme-to-json": "3.4.2",
+    "eslint-plugin-jest": "22.17.0"
     {{ /skipJest }}
   },
   "dependencies": {
     "reactxp": "2.0.0-rc.1",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "16.10.2",
+    "react-dom": "16.10.2",
     "react-native": "0.59.10",
     "react-native-windows": "0.59.0-rc.3"
   }
