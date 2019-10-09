@@ -17,8 +17,8 @@
     {{ /skipJest }}
   },
   "devDependencies": {
-    "@babel/core": "7.6.2",
-    "@babel/preset-env": "7.6.2",
+    "@babel/core": "7.6.3",
+    "@babel/preset-env": "7.6.3",
     "@babel/plugin-proposal-decorators": "7.6.0",
     "@react-native-community/cli": "1.10.0",
     "babel-loader": "8.0.6",
