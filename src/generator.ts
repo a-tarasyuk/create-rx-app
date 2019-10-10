@@ -259,7 +259,7 @@ export class Generator {
       skipJest,
     };
 
-    return JSON.parse(template.render(content, params));
+    return JSON.parse(template.render(content, params, {}, ['<%', '%>']));
   }
 
   private buildDestPath(absolutePath: string, relativeTo: string, params: Dictionary): string {
@@ -284,7 +284,7 @@ export class Generator {
         fs.copyFileSync(srcPath, destPath);
       } else {
         const permissions = fs.statSync(srcPath).mode;
-        const content = template.render(fs.readFileSync(srcPath, 'utf8'), params);
+        const content = template.render(fs.readFileSync(srcPath, 'utf8'), params, [], ['<%', '%>']);
         fs.writeFileSync(destPath, content, { encoding: 'utf8', mode: permissions });
       }
     }

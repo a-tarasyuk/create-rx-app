@@ -2,17 +2,17 @@
   "scripts": {
     "build:types": "tsc --emitDeclarationOnly",
     "type-check": "tsc --noEmit",
-    "type-check:watch": "{{ runCommand }} type-check{{ paramsPrefix }}-w",
+    "type-check:watch": "<% runCommand %> type-check<% paramsPrefix %>-w",
     "lint": "eslint --config .eslintrc --ext .ts,.tsx src"
   },
   "devDependencies": {
-    {{ ^skipJest }}
+    <% ^skipJest %>
     "@types/jest": "24.0.18",
     "@types/enzyme": "3.10.3",
-    {{ /skipJest }}
+    <% /skipJest %>
     "@typescript-eslint/parser": "2.3.3",
     "@typescript-eslint/eslint-plugin": "2.3.3",
     "fork-ts-checker-webpack-plugin": "1.5.0",
-    "typescript": "3.6.3"
+    "typescript": "3.6.4"
   }
 }

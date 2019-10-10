@@ -31,7 +31,7 @@
   "dependencies": {
     "@types/fs-extra": "8.0.0",
     "@types/jest": "24.0.18",
-    "@types/lodash": "4.14.142",
+    "@types/lodash": "4.14.144",
     "@types/minimist": "1.2.0",
     "@types/mustache": "0.8.32",
     "@types/node": "12.7.12",
@@ -50,7 +50,7 @@
     "lodash": "4.17.15",
     "mustache": "3.1.0",
     "ts-jest": "24.1.0",
-    "typescript": "3.6.3",
+    "typescript": "3.6.4",
     "username": "5.1.0",
     "uuid": "3.3.3"
   },

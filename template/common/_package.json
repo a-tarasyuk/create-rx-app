@@ -4,17 +4,17 @@
   "version": "0.0.1",
   "scripts": {
     "rn-cli": "node scripts/react-native.js",
-    "start:android": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-android",
-    "start:windows": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-windows",
-    "start:ios": "{{ runCommand }} rn-cli{{ paramsPrefix }}run-ios",
+    "start:android": "<% runCommand %> rn-cli<% paramsPrefix %>run-android",
+    "start:windows": "<% runCommand %> rn-cli<% paramsPrefix %>run-windows",
+    "start:ios": "<% runCommand %> rn-cli<% paramsPrefix %>run-ios",
     "start:web": "cross-env platform=web webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development",
-    "start:rn-dev-server": "{{ runCommand }} rn-cli{{ paramsPrefix }}start --reset-cache",
-    "build:web": "cross-env platform=web webpack --config=web/webpack/prod.js --progress --colors --mode=production"{{ ^skipJest }},{{ /skipJest }}
-    {{ ^skipJest }}
+    "start:rn-dev-server": "<% runCommand %> rn-cli<% paramsPrefix %>start --reset-cache",
+    "build:web": "cross-env platform=web webpack --config=web/webpack/prod.js --progress --colors --mode=production"<% ^skipJest %>,<% /skipJest %>
+    <% ^skipJest %>
     "test": "jest -c jest/jest.config.js",
-    "test:watch": "{{ runCommand }} test{{ paramsPrefix }}--watch",
+    "test:watch": "<% runCommand %> test<% paramsPrefix %>--watch",
     "test:debug": "node --inspect-brk node_modules/.bin/jest -c jest/jest.config.js --runInBand"
-    {{ /skipJest }}
+    <% /skipJest %>
   },
   "devDependencies": {
     "@babel/core": "7.6.3",
@@ -33,14 +33,14 @@
     "webpack": "4.41.0",
     "webpack-cli": "3.3.9",
     "webpack-dev-server": "3.8.2",
-    "webpack-merge": "4.2.2"{{ ^skipJest }},{{ /skipJest }}
-    {{ ^skipJest }}
+    "webpack-merge": "4.2.2"<% ^skipJest %>,<% /skipJest %>
+    <% ^skipJest %>
     "jest": "24.9.0",
     "enzyme": "3.10.0",
-    "enzyme-adapter-react-16": "1.14.0",
+    "enzyme-adapter-react-16": "1.15.0",
     "enzyme-to-json": "3.4.2",
     "eslint-plugin-jest": "22.17.0"
-    {{ /skipJest }}
+    <% /skipJest %>
   },
   "dependencies": {
     "reactxp": "2.0.0-rc.1",

@@ -1,6 +1,6 @@
 using ReactNative;
 
-namespace {{ ProjectName }}
+namespace <% ProjectName %>
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

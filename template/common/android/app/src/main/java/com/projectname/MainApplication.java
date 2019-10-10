@@ -1,4 +1,4 @@
-package com.{{ projectname }};
+package com.<% projectname %>;
 
 import android.app.Application;
 
