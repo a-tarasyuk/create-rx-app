@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="{{ packageGuid }}"
-    Publisher="CN={{ currentUser }}"
+    Name="<% packageGuid %>"
+    Publisher="CN=<% currentUser %>"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="{{ packageGuid }}" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="<% packageGuid %>" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>{{ displayName }}</DisplayName>
+    <DisplayName><% displayName %></DisplayName>
     <PublisherDisplayName>React Native for UWP</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="{{ ProjectName }}.App">
+      EntryPoint="<% ProjectName %>.App">
       <uap:VisualElements
-        DisplayName="{{ displayName }}"
+        DisplayName="<% displayName %>"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="{{ displayName }}"
+        Description="<% displayName %>"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
