@@ -1,2 +1,11 @@
 node_modules
 .test
+test
+.prettierignore
+.prettierrc.json
+jest.config.js
+.eslintrc
+.editorconfig
+.travis.yml
+tsconfig.eslint.json
+tsconfig.json

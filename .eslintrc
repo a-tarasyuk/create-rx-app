@@ -17,10 +17,12 @@
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
+
+    "indent": "off",
     "@typescript-eslint/indent": ["error", 2],
+
     "no-console": "off",
-    "max-len": ["error", 140],
-    "indent": "off"
+    "max-len": ["error", 140]
   },
   "globals": {},
   "settings": {}

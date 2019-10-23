@@ -20,7 +20,11 @@ export class PackageManager {
     try {
       execSync(command, { stdio: 'inherit' });
     } catch {
-      console.log(chalk.red.bold('Dependencies were not installed, please try to create a project again.'));
+      console.log(
+        chalk.red.bold(
+          'Dependencies were not installed, please try to create a project again.',
+        ),
+      );
       exit(1);
     }
   }
@@ -28,7 +32,11 @@ export class PackageManager {
   private buildDescription(description: string | undefined) {
     return [
       chalk.blue.bold(['[', this.yarn ? 'yarn' : 'npm', ']'].join('')),
-      chalk.white.bold([this.yarn ? 'adding' : 'installing', `${ description || ''}...`].join(' ')),
+      chalk.white.bold(
+        [this.yarn ? 'adding' : 'installing', `${description || ''}...`].join(
+          ' ',
+        ),
+      ),
     ].join(' ');
   }
 
@@ -36,12 +44,21 @@ export class PackageManager {
     const packages = this.normalizeDependencies(deps);
     const command = this.yarn
       ? ['yarn', 'add', packages, '--exact', saveDev ? '--dev' : '']
-      : ['npm', 'i', packages, '--save-exact', '--loglevel=error', saveDev ? '--save-dev' : ''];
+      : [
+          'npm',
+          'i',
+          packages,
+          '--save-exact',
+          '--loglevel=error',
+          saveDev ? '--save-dev' : '',
+        ];
 
     return command.join(' ');
   }
 
   private normalizeDependencies(deps: Dictionary): string {
-    return Object.keys(deps).map((key: string) => `${ key }@${ deps[key] }`).join(' ');
+    return Object.keys(deps)
+      .map((key: string) => `${key}@${deps[key]}`)
+      .join(' ');
   }
 }

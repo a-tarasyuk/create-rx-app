@@ -19,7 +19,11 @@ describe('create-rx-app.spec', () => {
   beforeEach(() => fs.removeSync(APP_PATH));
 
   it('checks base project structure', () => {
-    const { status } = spawnSync('node', [CREATE_RX_APP, APP_NAME, '--skip-install']);
+    const { status } = spawnSync('node', [
+      CREATE_RX_APP,
+      APP_NAME,
+      '--skip-install',
+    ]);
 
     expect(status).toEqual(0);
     expect(fs.existsSync(APP_PATH)).toBeTruthy();
@@ -39,36 +43,56 @@ describe('create-rx-app.spec', () => {
   });
 
   it('checks TypeScript project structure', () => {
-    const { status } = spawnSync('node', [CREATE_RX_APP, APP_NAME, '--skip-install']);
+    const { status } = spawnSync('node', [
+      CREATE_RX_APP,
+      APP_NAME,
+      '--skip-install',
+    ]);
 
     expect(status).toEqual(0);
     expect(fs.existsSync(APP_PATH)).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'tsconfig.json'))).toBeTruthy();
-    expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.tsx'))).toBeTruthy();
+    expect(
+      fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.tsx')),
+    ).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.tsx'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'config.ts'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'index.tsx'))).toBeTruthy();
   });
 
   it('checks JavaScript project structure', () => {
-    const { status } = spawnSync('node', [CREATE_RX_APP, APP_NAME, '--skip-install', '--javascript']);
+    const { status } = spawnSync('node', [
+      CREATE_RX_APP,
+      APP_NAME,
+      '--skip-install',
+      '--javascript',
+    ]);
 
     expect(status).toEqual(0);
     expect(fs.existsSync(APP_PATH)).toBeTruthy();
-    expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.js'))).toBeTruthy();
+    expect(
+      fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.js')),
+    ).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'config.js'))).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'src', 'index.js'))).toBeTruthy();
   });
 
   it('checks creating project without Jest', () => {
-    const { status } = spawnSync('node', [CREATE_RX_APP, APP_NAME, '--skip-install', '--skip-jest']);
+    const { status } = spawnSync('node', [
+      CREATE_RX_APP,
+      APP_NAME,
+      '--skip-install',
+      '--skip-jest',
+    ]);
 
     expect(status).toEqual(0);
     expect(fs.existsSync(APP_PATH)).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'jest'))).toBeFalsy();
 
-    const packageJson = JSON.parse(fs.readFileSync(path.join(APP_PATH, 'package.json')) as any);
+    const packageJson = JSON.parse(fs.readFileSync(
+      path.join(APP_PATH, 'package.json'),
+    ) as any);
 
     expect(packageJson.scripts.test).toBeUndefined();
     expect(packageJson.scripts['test:watch']).toBeUndefined();
@@ -77,44 +101,70 @@ describe('create-rx-app.spec', () => {
     expect(packageJson.devDependencies['babel-jest']).toBeUndefined();
     expect(packageJson.devDependencies['jest']).toBeUndefined();
     expect(packageJson.devDependencies['enzyme']).toBeUndefined();
-    expect(packageJson.devDependencies['enzyme-adapter-react-16']).toBeUndefined();
+    expect(
+      packageJson.devDependencies['enzyme-adapter-react-16'],
+    ).toBeUndefined();
     expect(packageJson.devDependencies['enzyme-to-json']).toBeUndefined();
   });
 
   it('checks TypeScript template without Jest', () => {
-    const { status } = spawnSync('node', [CREATE_RX_APP, APP_NAME, '--skip-install', '--skip-jest']);
+    const { status } = spawnSync('node', [
+      CREATE_RX_APP,
+      APP_NAME,
+      '--skip-install',
+      '--skip-jest',
+    ]);
 
     expect(status).toEqual(0);
-    expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.tsx'))).toBeFalsy();
+    expect(
+      fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.tsx')),
+    ).toBeFalsy();
 
-    const packageJson = JSON.parse(fs.readFileSync(path.join(APP_PATH, 'package.json')) as any);
+    const packageJson = JSON.parse(fs.readFileSync(
+      path.join(APP_PATH, 'package.json'),
+    ) as any);
     expect(packageJson.devDependencies['@types/enzyme']).toBeUndefined();
     expect(packageJson.devDependencies['@types/jest']).toBeUndefined();
   });
 
   it('checks JavaScript template without Jest', () => {
-    const { status } = spawnSync('node', [CREATE_RX_APP, APP_NAME, '--skip-install', '--skip-jest', '--javascript']);
+    const { status } = spawnSync('node', [
+      CREATE_RX_APP,
+      APP_NAME,
+      '--skip-install',
+      '--skip-jest',
+      '--javascript',
+    ]);
 
     expect(status).toEqual(0);
-    expect(fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.js'))).toBeFalsy();
+    expect(
+      fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.js')),
+    ).toBeFalsy();
   });
 
   it('checks stdout for invalid project names', () => {
     expect(
-      spawnSync('node', [CREATE_RX_APP, 'React', '--skip-install']).stdout.toString().trim()
+      spawnSync('node', [CREATE_RX_APP, 'React', '--skip-install'])
+        .stdout.toString()
+        .trim(),
     ).toEqual('Project name - React is not valid.');
 
     expect(
-      spawnSync('node', [CREATE_RX_APP, 'react', '--skip-install']).stdout.toString().trim()
+      spawnSync('node', [CREATE_RX_APP, 'react', '--skip-install'])
+        .stdout.toString()
+        .trim(),
     ).toEqual('Project name - react is not valid.');
 
     expect(
-      spawnSync('node', [CREATE_RX_APP, '../test/', '--skip-install']).stdout.toString().trim()
+      spawnSync('node', [CREATE_RX_APP, '../test/', '--skip-install'])
+        .stdout.toString()
+        .trim(),
     ).toEqual('Project name - ../test/ is not valid.');
 
     expect(
-      spawnSync('node', [CREATE_RX_APP, '.appname', '--skip-install']).stdout.toString().trim()
+      spawnSync('node', [CREATE_RX_APP, '.appname', '--skip-install'])
+        .stdout.toString()
+        .trim(),
     ).toEqual('Project name - .appname is not valid.');
   });
-
 });

@@ -5,6 +5,7 @@
 > [ReactXP](https://github.com/Microsoft/reactxp) project generator for building your next awesome cross-platform (Web, Android, iOS, Windows) app
 
 ## Creating an App
+
 > To create a new app, you may choose one of the following methods:
 
 ### npx _(npm >= **5.2**)_
@@ -54,9 +55,9 @@ This will create a directory called **AppName** inside the current working direc
 ```
 
 ## System Requirements
-* [Node.JS](https://nodejs.org/)
-* [npm](https://nodejs.org/en/download/package-manager/) or [yarn](https://yarnpkg.com/lang/en/docs/install/)
 
+- [Node.JS](https://nodejs.org/)
+- [npm](https://nodejs.org/en/download/package-manager/) or [yarn](https://yarnpkg.com/lang/en/docs/install/)
 
 ## License and Copyright
 

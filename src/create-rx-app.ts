@@ -14,21 +14,32 @@ const cancel = (): void => {
   exit();
 };
 
-const createRXApp = async (projectName: string | undefined, options: Options) => {
+const createRXApp = async (
+  projectName: string | undefined,
+  options: Options,
+) => {
   if (!projectName) {
     console.log(chalk.red('Project name cannot be empty.'));
     return exit();
   }
 
   if (!isValidProjectName(projectName)) {
-    console.log(chalk.red(`Project name - ${ chalk.red.bold(projectName) } is not valid.`));
+    console.log(
+      chalk.red(`Project name - ${chalk.red.bold(projectName)} is not valid.`),
+    );
     return exit();
   }
 
   if (fs.existsSync(projectName)) {
     try {
-      const { useExistingDir } = await Enquirer.prompt<{ useExistingDir: boolean }>({
-        message: chalk.yellow.bold(`Directory ${ chalk.red.bold(projectName) } is already exists. Continue?`),
+      const { useExistingDir } = await Enquirer.prompt<{
+        useExistingDir: boolean;
+      }>({
+        message: chalk.yellow.bold(
+          `Directory ${chalk.red.bold(
+            projectName,
+          )} is already exists. Continue?`,
+        ),
         initial: false,
         name: 'useExistingDir',
         type: 'confirm',
@@ -51,7 +62,7 @@ const createRXApp = async (projectName: string | undefined, options: Options) =>
 
 const program = new commander.Command('create-rx-app')
   .arguments('<project-directory>')
-  .usage(`${ chalk.green.bold('<project-directory>') } [options]`)
+  .usage(`${chalk.green.bold('<project-directory>')} [options]`)
   .option('--javascript', 'generate project in JavaScript')
   .option('--skip-install', `don't automatically install dependencies`)
   .option('--skip-jest', `don't automatically add Jest configuration`)

@@ -24,6 +24,8 @@
   ],
   "scripts": {
     "prepare": "npm run build",
+    "format": "prettier --write \"./**/*.{ts,md}\"",
+    "format:check": "prettier --list-different \"./**/*.{ts,md}\"",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint --config .eslintrc --ext .ts src test",
     "test": "jest -c jest.config.js"
@@ -49,6 +51,7 @@
     "jest": "24.9.0",
     "lodash": "4.17.15",
     "mustache": "3.1.0",
+    "prettier": "1.18.2",
     "ts-jest": "24.1.0",
     "typescript": "3.6.4",
     "username": "5.1.0",
@@ -62,7 +65,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run build"
+      "pre-commit": "npm run lint && npm run format:check && npm run build"
     }
   }
 }
