@@ -42,18 +42,21 @@ export class PackageManager {
 
   private buildCommand(deps: Dictionary, saveDev: boolean): string {
     const packages = this.normalizeDependencies(deps);
-    const command = this.yarn
-      ? ['yarn', 'add', packages, '--exact', saveDev ? '--dev' : '']
-      : [
-          'npm',
-          'i',
-          packages,
-          '--save-exact',
-          '--loglevel=error',
-          saveDev ? '--save-dev' : '',
-        ];
 
-    return command.join(' ');
+    if (this.yarn) {
+      return ['yarn', 'add', packages, '--exact', saveDev ? '--dev' : ''].join(
+        ' ',
+      );
+    }
+
+    return [
+      'npm',
+      'i',
+      packages,
+      '--save-exact',
+      '--loglevel=error',
+      saveDev ? '--save-dev' : '',
+    ].join(' ');
   }
 
   private normalizeDependencies(deps: Dictionary): string {
