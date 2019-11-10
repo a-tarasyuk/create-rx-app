@@ -90,9 +90,9 @@ describe('create-rx-app.spec', () => {
     expect(fs.existsSync(APP_PATH)).toBeTruthy();
     expect(fs.existsSync(path.join(APP_PATH, 'jest'))).toBeFalsy();
 
-    const packageJson = JSON.parse(fs.readFileSync(
-      path.join(APP_PATH, 'package.json'),
-    ) as any);
+    const packageJson = JSON.parse(
+      fs.readFileSync(path.join(APP_PATH, 'package.json')) as any,
+    );
 
     expect(packageJson.scripts.test).toBeUndefined();
     expect(packageJson.scripts['test:watch']).toBeUndefined();
@@ -120,9 +120,9 @@ describe('create-rx-app.spec', () => {
       fs.existsSync(path.join(APP_PATH, 'src', 'App.spec.tsx')),
     ).toBeFalsy();
 
-    const packageJson = JSON.parse(fs.readFileSync(
-      path.join(APP_PATH, 'package.json'),
-    ) as any);
+    const packageJson = JSON.parse(
+      fs.readFileSync(path.join(APP_PATH, 'package.json')) as any,
+    );
     expect(packageJson.devDependencies['@types/enzyme']).toBeUndefined();
     expect(packageJson.devDependencies['@types/jest']).toBeUndefined();
   });
