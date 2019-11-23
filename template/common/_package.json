@@ -17,14 +17,14 @@
     <% /skipJest %>
   },
   "devDependencies": {
-    "@babel/core": "7.7.2",
-    "@babel/preset-env": "7.7.1",
-    "@babel/plugin-proposal-decorators": "7.7.0",
+    "@babel/core": "7.7.4",
+    "@babel/preset-env": "7.7.4",
+    "@babel/plugin-proposal-decorators": "7.7.4",
     "@react-native-community/cli": "1.11.2",
     "babel-loader": "8.0.6",
     "cross-env": "6.0.3",
     "compression-webpack-plugin": "3.0.0",
-    "eslint": "6.6.0",
+    "eslint": "6.7.0",
     "eslint-loader": "3.0.2",
     "eslint-plugin-react": "7.16.0",
     "html-webpack-plugin": "3.2.0",
@@ -39,13 +39,13 @@
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.15.1",
     "enzyme-to-json": "3.4.3",
-    "eslint-plugin-jest": "23.0.3"
+    "eslint-plugin-jest": "23.0.4"
     <% /skipJest %>
   },
   "dependencies": {
     "reactxp": "2.0.0-rc.1",
-    "react": "16.11.0",
-    "react-dom": "16.11.0",
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
     "react-native": "0.59.10",
     "react-native-windows": "0.59.0-rc.3"
   }
