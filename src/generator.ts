@@ -382,7 +382,7 @@ export class Generator {
         const content = template.render(
           fs.readFileSync(srcPath, 'utf8'),
           params,
-          [],
+          {},
           ['<%', '%>'],
         );
         fs.writeFileSync(destPath, content, {
