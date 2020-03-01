@@ -1,7 +1,7 @@
 import template from 'mustache';
 import username from 'username';
 import chalk from 'chalk';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import fs from 'fs-extra';
 import os from 'os';
@@ -138,8 +138,8 @@ export class Generator {
       ...this.params,
       ...(certificateThumbprint && { certificateThumbprint }),
       currentUser,
-      packageGuid: uuid.v4(),
-      projectGuid: uuid.v4(),
+      packageGuid: uuidv4(),
+      projectGuid: uuidv4(),
     };
     const pathParams = { ...this.params, _gitignore: '.gitignore' };
     const excludePaths = certificateThumbprint
