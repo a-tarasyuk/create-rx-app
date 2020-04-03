@@ -11,7 +11,7 @@ export class PackageManager {
     this.yarn = yarn;
   }
 
-  public install(deps: Dictionary, description: string, saveDev = false) {
+  public install(deps: Dictionary, description: string, saveDev = false): void {
     const command = this.buildCommand(deps, saveDev);
 
     console.log(this.buildDescription(description));

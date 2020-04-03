@@ -119,8 +119,8 @@ export class Generator {
       skipJest,
     };
 
-    templatePaths.forEach(srcPath =>
-      this.walk(srcPath, excludePaths).forEach(absolutePath =>
+    templatePaths.forEach((srcPath) =>
+      this.walk(srcPath, excludePaths).forEach((absolutePath) =>
         this.copy(
           absolutePath,
           this.buildDestPath(absolutePath, srcPath, pathParams),
@@ -146,7 +146,7 @@ export class Generator {
       ? [WINDOWS_TEMPORARY_KEY_PATH]
       : [];
 
-    this.walk(WINDOWS_TEMPLATE_PATH, excludePaths).forEach(absolutePath =>
+    this.walk(WINDOWS_TEMPLATE_PATH, excludePaths).forEach((absolutePath) =>
       this.copy(
         absolutePath,
         this.buildDestPath(absolutePath, COMMON_TEMPLATE_PATH, pathParams),
@@ -204,10 +204,7 @@ export class Generator {
         chalk.green.bold('Self-signed certificate generated successfully.'),
       );
 
-      const output = stdout
-        .toString()
-        .trim()
-        .split('\n');
+      const output = stdout.toString().trim().split('\n');
       return output[output.length - 1];
     }
 
@@ -357,7 +354,7 @@ export class Generator {
     );
 
     Object.keys(params).forEach(
-      regexp =>
+      (regexp) =>
         (destPath = destPath.replace(
           new RegExp(`\\b${regexp}`, 'g'),
           params[regexp],
@@ -403,7 +400,7 @@ export class Generator {
 
   private walk(srcPath: string, excludePaths: string[] = []): string[] {
     const isExcluded = (file: string) =>
-      excludePaths.some(p => file.indexOf(p) >= 0);
+      excludePaths.some((p) => file.indexOf(p) >= 0);
 
     if (!fs.lstatSync(srcPath).isDirectory()) {
       return isExcluded(srcPath) ? [] : [srcPath];
@@ -414,8 +411,8 @@ export class Generator {
       ...flatten(
         fs
           .readdirSync(srcPath)
-          .map(child => this.walk(path.join(srcPath, child))),
+          .map((child) => this.walk(path.join(srcPath, child))),
       ),
-    ].filter(absolutePath => !isExcluded(absolutePath));
+    ].filter((absolutePath) => !isExcluded(absolutePath));
   }
 }

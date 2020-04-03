@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import RX from 'reactxp';
 
 const _styles = {
@@ -41,7 +41,7 @@ const _styles = {
 };
 
 export class App extends RX.Component {
-  public render() {
+  public render(): ReactElement<RX.View> {
     return (
       <RX.View style={ _styles.main }>
         <RX.View>
