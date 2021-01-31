@@ -147,24 +147,24 @@ describe('create-rx-app.spec', () => {
       spawnSync('node', [CREATE_RX_APP, 'React', '--skip-install'])
         .stdout.toString()
         .trim(),
-    ).toEqual('Project name - React is not valid.');
+    ).toMatch(/Project name - React is not valid/);
 
     expect(
       spawnSync('node', [CREATE_RX_APP, 'react', '--skip-install'])
         .stdout.toString()
         .trim(),
-    ).toEqual('Project name - react is not valid.');
+    ).toMatch(/Project name - react is not valid/);
 
     expect(
       spawnSync('node', [CREATE_RX_APP, '../test/', '--skip-install'])
         .stdout.toString()
         .trim(),
-    ).toEqual('Project name - ../test/ is not valid.');
+    ).toMatch(/Project name - \.\.\/test\/ is not valid/);
 
     expect(
       spawnSync('node', [CREATE_RX_APP, '.appname', '--skip-install'])
         .stdout.toString()
         .trim(),
-    ).toEqual('Project name - .appname is not valid.');
+    ).toMatch(/Project name - \.appname is not valid/);
   });
 });

@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    target-branch: "master"
+    directory: "/"
+    assignees:
+      - "a-tarasyuk"
+    schedule:
+      interval: "weekly"
+      day: "monday"
