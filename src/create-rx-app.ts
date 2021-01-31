@@ -75,9 +75,11 @@ if (!program.args.length) {
   program.help();
 }
 
+const options = program.opts();
+
 createRXApp(program.args.shift(), {
-  javascript: !!program.javascript,
-  skipInstall: !!program.skipInstall,
-  skipJest: !!program.skipJest,
-  yarn: !program.skipYarn && yarnExists(),
+  javascript: !!options.javascript,
+  skipInstall: !!options.skipInstall,
+  skipJest: !!options.skipJest,
+  yarn: !options.skipYarn && yarnExists(),
 });

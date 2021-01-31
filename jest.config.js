@@ -8,5 +8,5 @@ module.exports = {
     'ts', 'tsx', 'js', 'json', 'node',
   ],
 
-  moduleDirectories: ['node_modules'],
+  moduleDirectories: ['node_modules']
 };
