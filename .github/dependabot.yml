@@ -6,5 +6,4 @@ updates:
     assignees:
       - "a-tarasyuk"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
