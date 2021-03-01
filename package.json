@@ -31,7 +31,7 @@
     "test": "jest -c jest.config.js"
   },
   "dependencies": {
-    "@types/fs-extra": "9.0.6",
+    "@types/fs-extra": "9.0.7",
     "@types/jest": "26.0.20",
     "@types/lodash": "4.14.168",
     "@types/minimist": "1.2.1",
